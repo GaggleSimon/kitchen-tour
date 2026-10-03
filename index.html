@@ -51,7 +51,8 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
-.title-card { top: calc(16px + env(safe-area-inset-top, 0px)); left: 16px; padding: 12px 16px 13px; max-width: calc(100% - 32px); }
+.title-card { top: calc(16px + env(safe-area-inset-top, 0px)); left: 16px; padding: 12px 16px 13px; max-width: calc(100% - 32px);
+  z-index: 0; pointer-events: none; }  /* walk markers and their labels stay on top of it */
 .title-card h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; line-height: 1.1; text-wrap: balance; }
 .title-card .where { margin-top: 4px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 0.86rem; color: var(--muted); }
 .title-card .where strong { color: var(--ink); font-weight: 600; }
@@ -119,7 +120,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 
   <div class="card plan-card">
     <p class="label">Floor plan · you are here</p>
-    <svg id="plan" viewBox="-3.6 -0.95 7.2 7.25" aria-hidden="true"></svg>
+    <svg id="plan" viewBox="-3.6 -0.95 7.2 8.25" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
   </div>
 </div>
@@ -130,7 +131,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 // Each panorama is centered on +y, so a direction's yaw is its clockwise angle from +y.
 const EYE = 1.55;
 const SPOTS = [
-  { id: "living", name: "Living room", x: 0.60, y: -5.20, start: 0 },
+  { id: "living", name: "Living room", x: 0.60, y: -6.90, start: 0 },
   { id: "breakfast", name: "Breakfast table", x: -2.55, y: -1.15, start: 45 },
   { id: "range_aisle", name: "At the range", x: -0.05, y: -0.68, start: 0 },
   { id: "fridge_end", name: "Fridge & pantry", x: 2.60, y: -2.00, start: -45 },
@@ -181,22 +182,23 @@ function el(tag, attrs, parent = plan) {
 const rect = (x0, y0, x1, y1, cls) => el("rect", { x: x0, y: -y1, width: x1 - x0, height: y1 - y0, class: cls });
 const line = (pts, cls) => el("polyline", { points: pts.map(p => P(...p)).join(" "), class: cls });
 
-el("polygon", { class: "plan-floor", points: [[-3.213, 0.61], [3.213, 0.61], [3.213, -6.3], [-1.257, -6.3], [-1.257, -3.607], [-3.213, -3.607]].map(p => P(...p)).join(" ") });
+el("polygon", { class: "plan-floor", points: [[-3.213, 0.61], [3.213, 0.61], [3.213, -7.3], [-1.257, -7.3], [-1.257, -3.607], [-3.213, -3.607]].map(p => P(...p)).join(" ") });
 rect(-3.213, 0.0, 3.175, 0.61, "plan-cab");          // perimeter cabinets
 rect(1.515, -0.102, 3.213, 0.61, "plan-cab");        // fridge + pantry wall
 rect(-0.543, 0.0, 0.372, 0.61, "plan-range");        // range
 rect(-0.605, -2.485, 1.985, -1.27, "plan-cab");      // island
 rect(-1.955, -2.485, -0.6, -1.571, "plan-table");    // dining extension
+el("circle", { cx: 0.90, cy: 4.70, r: 0.686, class: "plan-table" }); // round dining table
 // walls, with openings for the glass doors and the pocket door
 line([[-3.213, -3.25], [-3.213, -3.607], [-2.92, -3.607]], "plan-wall");
-line([[-1.40, -3.607], [-1.257, -3.607], [-1.257, -6.3]], "plan-wall");
+line([[-1.40, -3.607], [-1.257, -3.607], [-1.257, -7.3]], "plan-wall");
 line([[-3.213, -0.12], [-3.213, 0.61], [3.213, 0.61], [3.213, -0.24]], "plan-wall");
-line([[3.213, -1.05], [3.213, -6.3]], "plan-wall");
+line([[3.213, -1.05], [3.213, -7.3]], "plan-wall");
 line([[-3.213, -3.25], [-3.213, -0.12]], "plan-glass");   // 3-panel French doors
 line([[-2.92, -3.607], [-1.40, -3.607]], "plan-glass");   // porch slider
 line([[3.213, -1.05], [3.213, -0.24]], "plan-door");      // pocket door
 el("text", { x: 0.65, y: 1.95, class: "plan-text", "text-anchor": "middle" }).textContent = "ISLAND";
-el("text", { x: 0.95, y: 5.9, class: "plan-text", "text-anchor": "middle" }).textContent = "LIVING / DINING";
+el("text", { x: 0.95, y: 7.05, class: "plan-text", "text-anchor": "middle" }).textContent = "LIVING / DINING";
 
 const cone = el("path", { class: "plan-cone", d: "" });
 const dots = {};
