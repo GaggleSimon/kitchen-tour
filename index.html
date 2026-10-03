@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html,body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Jane's Kitchen 360</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Pannellum 2.5.6, https://github.com/mpetroff/pannellum */
+.pnlm-container{margin:0;padding:0;overflow:hidden;position:relative;cursor:default;width:100%;height:100%;font-family:Helvetica,"Nimbus Sans L","Liberation Sans",Arial,sans-serif;background:#f4f4f4 url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2267%22%20height%3D%22100%22%20viewBox%3D%220%200%2067%20100%22%3E%0A%3Cpath%20stroke%3D%22%23ccc%22%20fill%3D%22none%22%20d%3D%22M33.5%2C50%2C0%2C63%2C33.5%2C75%2C67%2C63%2C33.5%2C50m-33.5-50%2C67%2C25m-0.5%2C0%2C0%2C75m-66.5-75%2C67-25m-33.5%2C75%2C0%2C25m0-100%2C0%2C50%22%2F%3E%0A%3C%2Fsvg%3E%0A') repeat;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-o-user-select:none;-ms-user-select:none;user-select:none;outline:0;line-height:1.4;contain:content}.pnlm-container *{box-sizing:content-box}.pnlm-ui{position:absolute;width:100%;height:100%;z-index:1}.pnlm-grab{cursor:grab;cursor:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2226%22%20width%3D%2226%22%3E%0A%3Cpath%20stroke%3D%22%23000%22%20stroke-width%3D%221px%22%20fill%3D%22%23fff%22%20d%3D%22m15.3%2020.5s6.38-6.73%204.64-8.24-3.47%201.01-3.47%201.01%203.61-5.72%201.41-6.49c-2.2-0.769-3.33%204.36-3.33%204.36s0.873-5.76-1.06-5.76-1.58%205.39-1.58%205.39-0.574-4.59-2.18-4.12c-1.61%200.468-0.572%205.51-0.572%205.51s-1.58-4.89-2.93-3.79c-1.35%201.11%200.258%205.25%200.572%206.62%200.836%202.43%202.03%202.94%202.17%205.55%22%2F%3E%0A%3C%2Fsvg%3E%0A') 12 8,default}.pnlm-grabbing{cursor:grabbing;cursor:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2226%22%20width%3D%2226%22%3E%0A%3Cpath%20stroke%3D%22%23000%22%20stroke-width%3D%221px%22%20fill%3D%22%23fff%22%20d%3D%22m15.3%2020.5s5.07-5.29%203.77-6.74c-1.31-1.45-2.53%200.14-2.53%200.14s2.74-3.29%200.535-4.06c-2.2-0.769-2.52%201.3-2.52%201.3s0.81-2.13-1.12-2.13-1.52%201.77-1.52%201.77-0.261-1.59-1.87-1.12c-1.61%200.468-0.874%202.17-0.874%202.17s-0.651-1.55-2-0.445c-1.35%201.11-0.68%202.25-0.365%203.62%200.836%202.43%202.03%202.94%202.17%205.55%22%2F%3E%0A%3C%2Fsvg%3E%0A') 12 8,default}.pnlm-sprite{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2226%22%20height%3D%22208%22%3E%0A%3Ccircle%20fill-opacity%3D%22.78%22%20cy%3D%22117%22%20cx%3D%2213%22%20r%3D%2211%22%20fill%3D%22%23fff%22%2F%3E%0A%3Ccircle%20fill-opacity%3D%22.78%22%20cy%3D%22143%22%20cx%3D%2213%22%20r%3D%2211%22%20fill%3D%22%23fff%22%2F%3E%0A%3Ccircle%20cy%3D%22169%22%20cx%3D%2213%22%20r%3D%227%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%2F%3E%0A%3Ccircle%20cy%3D%22195%22%20cx%3D%2213%22%20r%3D%227%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%222%22%2F%3E%0A%3Ccircle%20cx%3D%2213%22%20cy%3D%22195%22%20r%3D%222.5%22%2F%3E%0A%3Cpath%20d%3D%22m5%2083v6h2v-4h4v-2zm10%200v2h4v4h2v-6zm-5%205v6h6v-6zm-5%205v6h6v-2h-4v-4zm14%200v4h-4v2h6v-6z%22%2F%3E%0A%3Cpath%20d%3D%22m13%20110a7%207%200%200%200%20-7%207%207%207%200%200%200%207%207%207%207%200%200%200%207%20-7%207%207%200%200%200%20-7%20-7zm-1%203h2v2h-2zm0%203h2v5h-2z%22%2F%3E%0A%3Cpath%20d%3D%22m5%2057v6h2v-4h4v-2zm10%200v2h4v4h2v-6zm-10%2010v6h6v-2h-4v-4zm14%200v4h-4v2h6v-6z%22%2F%3E%0A%3Cpath%20d%3D%22m17%2038v2h-8v-2z%22%2F%3E%0A%3Cpath%20d%3D%22m12%209v3h-3v2h3v3h2v-3h3v-2h-3v-3z%22%2F%3E%0A%3Cpath%20d%3D%22m13%20136-6.125%206.125h4.375v7.875h3.5v-7.875h4.375z%22%2F%3E%0A%3Cpath%20d%3D%22m10.428%20173.33v-5.77l5-2.89v5.77zm1-1.73%203-1.73-3.001-1.74z%22%2F%3E%0A%3C%2Fsvg%3E%0A')}.pnlm-container:-moz-full-screen{height:100%!important;width:100%!important;position:static!important}.pnlm-container:-webkit-full-screen{height:100%!important;width:100%!important;position:static!important}.pnlm-container:-ms-fullscreen{height:100%!important;width:100%!important;position:static!important}.pnlm-container:fullscreen{height:100%!important;width:100%!important;position:static!important}.pnlm-render-container{cursor:inherit;position:absolute;height:100%;width:100%}.pnlm-controls{margin-top:4px;background-color:#fff;border:1px solid #999;border-color:rgba(0,0,0,0.4);border-radius:3px;cursor:pointer;z-index:2;-webkit-transform:translateZ(9999px);transform:translateZ(9999px)}.pnlm-control:hover{background-color:#f8f8f8}.pnlm-controls-container{position:absolute;top:0;left:4px;z-index:1}.pnlm-zoom-controls{width:26px;height:52px}.pnlm-zoom-in{width:100%;height:50%;position:absolute;top:0;border-radius:3px 3px 0 0}.pnlm-zoom-out{width:100%;height:50%;position:absolute;bottom:0;background-position:0 -26px;border-top:1px solid #ddd;border-top-color:rgba(0,0,0,0.10);border-radius:0 0 3px 3px}.pnlm-fullscreen-toggle-button,.pnlm-orientation-button,.pnlm-hot-spot-debug-indicator{width:26px;height:26px}.pnlm-hot-spot-debug-indicator{position:absolute;top:50%;left:50%;width:26px;height:26px;margin:-13px 0 0 -13px;background-color:rgba(255,255,255,0.5);border-radius:13px;display:none}.pnlm-orientation-button-inactive{background-position:0 -156px}.pnlm-orientation-button-active{background-position:0 -182px}.pnlm-fullscreen-toggle-button-inactive{background-position:0 -52px}.pnlm-fullscreen-toggle-button-active{background-position:0 -78px}.pnlm-panorama-info{position:absolute;bottom:4px;background-color:rgba(0,0,0,0.7);border-radius:0 3px 3px 0;padding-right:10px;color:#fff;text-align:left;display:none;z-index:2;-webkit-transform:translateZ(9999px);transform:translateZ(9999px)}.pnlm-title-box{position:relative;font-size:20px;display:table;padding-left:5px;margin-bottom:3px}.pnlm-author-box{position:relative;font-size:12px;display:table;padding-left:5px}.pnlm-load-box{position:absolute;top:50%;left:50%;width:200px;height:150px;margin:-75px 0 0 -100px;background-color:rgba(0,0,0,0.7);border-radius:3px;text-align:center;font-size:20px;display:none;color:#fff}.pnlm-load-box p{margin:20px 0}.pnlm-lbox{position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;display:none}.pnlm-loading{animation-duration:1.5s;-webkit-animation-duration:1.5s;animation-name:pnlm-mv;-webkit-animation-name:pnlm-mv;animation-iteration-count:infinite;-webkit-animation-iteration-count:infinite;animation-timing-function:linear;-webkit-animation-timing-function:linear;height:10px;width:10px;background-color:#fff;position:relative}@keyframes pnlm-mv{from{left:0;top:0}25%{left:10px;top:0}50%{left:10px;top:10px}75%{left:0;top:10px}to{left:0;top:0}}@-webkit-keyframes pnlm-mv{from{left:0;top:0}25%{left:10px;top:0}50%{left:10px;top:10px}75%{left:0;top:10px}to{left:0;top:0}}.pnlm-load-button{position:absolute;top:50%;left:50%;width:200px;height:100px;margin:-50px 0 0 -100px;background-color:rgba(0,0,0,.7);border-radius:3px;text-align:center;font-size:20px;display:table;color:#fff;cursor:pointer}.pnlm-load-button:hover{background-color:rgba(0,0,0,.8)}.pnlm-load-button p{display:table-cell;vertical-align:middle}.pnlm-info-box{font-size:15px;position:absolute;top:50%;left:50%;width:200px;height:150px;margin:-75px 0 0 -100px;background-color:#000;border-radius:3px;display:table;text-align:center;color:#fff;table-layout:fixed}.pnlm-info-box a,.pnlm-author-box a{color:#fff;word-wrap:break-word;overflow-wrap:break-word}.pnlm-info-box p{display:table-cell;vertical-align:middle;padding:0 5px 0 5px}.pnlm-error-msg{display:none}.pnlm-about-msg{font-size:11px;line-height:11px;color:#fff;padding:5px 8px 5px 8px;background:rgba(0,0,0,0.7);border-radius:3px;position:absolute;top:50px;left:50px;display:none;opacity:0;-moz-transition:opacity .3s ease-in-out;-webkit-transition:opacity .3s ease-in-out;-o-transition:opacity .3s ease-in-out;-ms-transition:opacity .3s ease-in-out;transition:opacity .3s ease-in-out;z-index:1}.pnlm-about-msg a:link,.pnlm-about-msg a:visited{color:#fff}.pnlm-about-msg a:hover,.pnlm-about-msg a:active{color:#eee}.pnlm-hotspot-base{position:absolute;visibility:hidden;cursor:default;vertical-align:middle;top:0;z-index:1}.pnlm-hotspot{height:26px;width:26px;border-radius:13px}.pnlm-hotspot:hover{background-color:rgba(255,255,255,0.2)}.pnlm-hotspot.pnlm-info{background-position:0 -104px}.pnlm-hotspot.pnlm-scene{background-position:0 -130px}div.pnlm-tooltip span{visibility:hidden;position:absolute;border-radius:3px;background-color:rgba(0,0,0,0.7);color:#fff;text-align:center;max-width:200px;padding:5px 10px;margin-left:-220px;cursor:default}div.pnlm-tooltip:hover span{visibility:visible}div.pnlm-tooltip:hover span:after{content:'';position:absolute;width:0;height:0;border-width:10px;border-style:solid;border-color:rgba(0,0,0,0.7) transparent transparent transparent;bottom:-20px;left:-10px;margin:0 50%}.pnlm-compass{position:absolute;width:50px;height:50px;right:4px;bottom:4px;border-radius:25px;background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2250%22%20width%3D%2250%22%3E%0A%3Cpath%20d%3D%22m24.5078%206-3.2578%2018h7.5l-3.25781-18h-0.984376zm-3.2578%2020%203.2578%2018h0.9844l3.2578-18h-7.5zm1.19531%200.9941h5.10938l-2.5547%2014.1075-2.5547-14.1075z%22%2F%3E%0A%3C%2Fsvg%3E%0A');cursor:default;display:none}.pnlm-world{position:absolute;left:50%;top:50%}.pnlm-face{position:absolute;-webkit-transform-origin:0 0;transform-origin:0 0}.pnlm-dragfix,.pnlm-preview-img{position:absolute;height:100%;width:100%}.pnlm-preview-img{background-size:cover;background-position:center}.pnlm-lbar{width:150px;margin:0 auto;border:#fff 1px solid;height:6px}.pnlm-lbar-fill{background:#fff;height:100%;width:0}.pnlm-lmsg{font-size:12px}.pnlm-fade-img{position:absolute;top:0;left:0}.pnlm-pointer{cursor:pointer}
+</style>
+<style>
+/* Layout: the panorama fills the screen; a floor-plan card (where you stand, which way you face) floats over it. */
+:root {
+  --bg: #e8e3db;          /* greige plaster */
+  --panel: rgba(247, 244, 239, 0.88);
+  --ink: #2b2824;
+  --muted: #6e665b;
+  --line: #cbc2b4;
+  --cabinet: #d9d2c6;
+  --brass: #9c7135;       /* the hardware finish */
+  --brass-soft: rgba(156, 113, 53, 0.22);
+  --font-display: "Libre Caslon Display", "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --font-ui: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171614; --panel: rgba(28, 26, 23, 0.86); --ink: #efe8dc; --muted: #b0a593; --line: #4a453d;
+    --cabinet: #3a362f; --brass: #d3a764; --brass-soft: rgba(211, 167, 100, 0.25); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171614; --panel: rgba(28, 26, 23, 0.86); --ink: #efe8dc; --muted: #b0a593; --line: #4a453d;
+  --cabinet: #3a362f; --brass: #d3a764; --brass-soft: rgba(211, 167, 100, 0.25); color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); overflow: hidden; }
+.tour { position: relative; height: 100%; }
+#pano { position: absolute; inset: 0; background: var(--bg); }
+.pnlm-container { background: var(--bg); font-family: var(--font-ui); }
+.pnlm-controls-container { top: auto; left: auto; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }  /* clear of the title card */
+.pnlm-load-box { background: var(--panel); color: var(--ink); border-radius: 10px; }
+.pnlm-lbar-fill { background: var(--brass); }
+.pnlm-lbar { border-color: var(--brass); }
+
+.card {
+  position: absolute; z-index: 5; background: var(--panel); color: var(--ink);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+}
+.title-card { top: calc(16px + env(safe-area-inset-top, 0px)); left: 16px; padding: 12px 16px 13px; max-width: calc(100% - 32px); }
+.title-card h1 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.55rem; line-height: 1.1; text-wrap: balance; }
+.title-card .where { margin-top: 4px; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 0.86rem; color: var(--muted); }
+.title-card .where strong { color: var(--ink); font-weight: 600; }
+.title-card .hint { font-size: 0.78rem; letter-spacing: 0.02em; }
+
+.plan-card { left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); padding: 10px 12px 12px; width: 236px; max-width: calc(100% - 32px); }
+.plan-card .label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.plan-card svg { display: block; width: 100%; height: auto; }
+.spots { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.spots button {
+  width: 100%; font: 500 0.78rem/1.2 var(--font-ui); color: var(--ink); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px; cursor: pointer; text-align: center;
+}
+.spots button:hover { border-color: var(--brass); }
+.spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
+.spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+/* plan drawing */
+.plan-floor { fill: var(--bg); }
+.plan-wall { stroke: var(--ink); stroke-width: 0.09; fill: none; stroke-linecap: square; }
+.plan-glass { stroke: var(--brass); stroke-width: 0.06; fill: none; }
+.plan-door { stroke: var(--muted); stroke-width: 0.05; fill: none; stroke-dasharray: 0.1 0.07; }
+.plan-cab { fill: var(--cabinet); stroke: var(--muted); stroke-width: 0.02; }
+.plan-range { fill: var(--muted); }
+.plan-table { fill: none; stroke: var(--muted); stroke-width: 0.03; }
+.plan-cone { fill: var(--brass-soft); stroke: none; }
+.plan-dot { fill: var(--panel); stroke: var(--brass); stroke-width: 0.06; cursor: pointer; }
+.plan-dot.active { fill: var(--brass); }
+.plan-text { font: 600 0.3px var(--font-ui); fill: var(--muted); letter-spacing: 0.01em; }
+
+/* walk-to markers inside the panorama */
+.hs-spot { width: 54px; height: 54px; margin-left: -27px; margin-top: -27px; cursor: pointer; }
+.hs-spot .ring {
+  position: absolute; inset: 9px; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.95);
+  background: rgba(156, 113, 53, 0.55); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease;
+}
+.hs-spot:hover .ring { transform: scale(1.12); }
+.hs-spot .tag {
+  position: absolute; left: 50%; bottom: 52px; transform: translateX(-50%); white-space: nowrap;
+  font: 600 0.8rem/1 var(--font-ui); color: #fff; background: rgba(30, 27, 23, 0.72);
+  padding: 5px 9px; border-radius: 999px; pointer-events: none;
+}
+@media (max-width: 520px) {
+  .title-card h1 { font-size: 1.25rem; }
+  .title-card .hint { display: none; }
+  /* phones: a compact strip, small plan beside the spot list */
+  .plan-card { right: 16px; width: auto; display: grid; grid-template-columns: 104px 1fr; column-gap: 12px; align-items: center; }
+  .plan-card .label { grid-column: 1 / -1; }
+  .spots { margin: 0; grid-template-columns: 1fr; gap: 5px; }
+  .spots button { padding: 5px 8px; font-size: 0.74rem; }
+  .pnlm-controls-container { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hs-spot .ring { transition: none; } }
+</style>
+</head>
+<body>
+<div class="tour">
+  <div id="pano" role="img" aria-label="360 degree view of the kitchen"></div>
+
+  <div class="card title-card">
+    <h1>Jane's Kitchen</h1>
+    <div class="where"><strong id="where-name">Living room</strong><span class="hint">Drag to look around · click a brass marker to walk</span></div>
+  </div>
+
+  <div class="card plan-card">
+    <p class="label">Floor plan · you are here</p>
+    <svg id="plan" viewBox="-3.6 -0.95 7.2 7.25" aria-hidden="true"></svg>
+    <ul class="spots" id="spot-list"></ul>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.js"></script>
+<script>
+// Spot positions in meters, from the Blender scene (x right along the cabinet wall, y toward the cabinets).
+// Each panorama is centered on +y, so a direction's yaw is its clockwise angle from +y.
+const EYE = 1.55;
+const SPOTS = [
+  { id: "living", name: "Living room", x: 0.60, y: -5.20, start: 0 },
+  { id: "breakfast", name: "Breakfast table", x: -2.55, y: -1.15, start: 45 },
+  { id: "range_aisle", name: "At the range", x: -0.05, y: -0.68, start: 0 },
+  { id: "fridge_end", name: "Fridge & pantry", x: 2.60, y: -2.00, start: -45 },
+];
+const byId = Object.fromEntries(SPOTS.map(s => [s.id, s]));
+const deg = r => r * 180 / Math.PI;
+
+function hotspotsFor(from) {
+  return SPOTS.filter(s => s.id !== from.id).map(to => {
+    const dx = to.x - from.x, dy = to.y - from.y, dist = Math.hypot(dx, dy);
+    return {
+      type: "scene", sceneId: to.id, yaw: deg(Math.atan2(dx, dy)), pitch: -deg(Math.atan2(EYE, dist)),
+      targetYaw: "sameAzimuth", cssClass: "hs-spot",
+      createTooltipFunc: (div, label) => {
+        div.tabIndex = 0;
+        div.setAttribute("role", "button");
+        div.setAttribute("aria-label", "Walk to " + label);
+        div.innerHTML = '<span class="ring"></span><span class="tag"></span>';
+        div.querySelector(".tag").textContent = label;
+        div.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") viewer.loadScene(to.id); });
+      },
+      createTooltipArgs: to.name,
+    };
+  });
+}
+
+const scenes = {};
+for (const s of SPOTS) {
+  scenes[s.id] = { type: "equirectangular", panorama: "pano/" + s.id + ".jpg", yaw: s.start, pitch: -4, hotSpots: hotspotsFor(s) };
+}
+const viewer = pannellum.viewer("pano", {
+  // portrait phones get a narrower horizontal field of view so the picture is not stretched
+  default: { firstScene: "living", autoLoad: true, sceneFadeDuration: 700, hfov: innerHeight > innerWidth ? 72 : 100,
+             minHfov: 40, maxHfov: 115, showControls: true },
+  scenes,
+});
+
+// ---- floor plan -------------------------------------------------------------------------------
+const NS = "http://www.w3.org/2000/svg";
+const plan = document.getElementById("plan");
+const P = (x, y) => `${x},${-y}`; // plan coordinates: y up -> svg y down
+function el(tag, attrs, parent = plan) {
+  const n = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  parent.appendChild(n);
+  return n;
+}
+const rect = (x0, y0, x1, y1, cls) => el("rect", { x: x0, y: -y1, width: x1 - x0, height: y1 - y0, class: cls });
+const line = (pts, cls) => el("polyline", { points: pts.map(p => P(...p)).join(" "), class: cls });
+
+el("polygon", { class: "plan-floor", points: [[-3.213, 0.61], [3.213, 0.61], [3.213, -6.3], [-1.257, -6.3], [-1.257, -3.607], [-3.213, -3.607]].map(p => P(...p)).join(" ") });
+rect(-3.213, 0.0, 3.175, 0.61, "plan-cab");          // perimeter cabinets
+rect(1.515, -0.102, 3.213, 0.61, "plan-cab");        // fridge + pantry wall
+rect(-0.543, 0.0, 0.372, 0.61, "plan-range");        // range
+rect(-0.605, -2.485, 1.985, -1.27, "plan-cab");      // island
+rect(-1.955, -2.485, -0.6, -1.571, "plan-table");    // dining extension
+// walls, with openings for the glass doors and the pocket door
+line([[-3.213, -3.25], [-3.213, -3.607], [-2.92, -3.607]], "plan-wall");
+line([[-1.40, -3.607], [-1.257, -3.607], [-1.257, -6.3]], "plan-wall");
+line([[-3.213, -0.12], [-3.213, 0.61], [3.213, 0.61], [3.213, -0.24]], "plan-wall");
+line([[3.213, -1.05], [3.213, -6.3]], "plan-wall");
+line([[-3.213, -3.25], [-3.213, -0.12]], "plan-glass");   // 3-panel French doors
+line([[-2.92, -3.607], [-1.40, -3.607]], "plan-glass");   // porch slider
+line([[3.213, -1.05], [3.213, -0.24]], "plan-door");      // pocket door
+el("text", { x: 0.65, y: 1.95, class: "plan-text", "text-anchor": "middle" }).textContent = "ISLAND";
+el("text", { x: 0.95, y: 5.9, class: "plan-text", "text-anchor": "middle" }).textContent = "LIVING / DINING";
+
+const cone = el("path", { class: "plan-cone", d: "" });
+const dots = {};
+for (const s of SPOTS) {
+  const c = el("circle", { cx: s.x, cy: -s.y, r: 0.2, class: "plan-dot" });
+  c.addEventListener("click", () => go(s.id));
+  dots[s.id] = c;
+}
+
+const list = document.getElementById("spot-list");
+const buttons = {};
+for (const s of SPOTS) {
+  const li = document.createElement("li");
+  const b = document.createElement("button");
+  b.type = "button";
+  b.id = "spot-" + s.id;
+  b.textContent = s.name;
+  b.addEventListener("click", () => go(s.id));
+  li.appendChild(b);
+  list.appendChild(li);
+  buttons[s.id] = b;
+}
+
+function go(id) { if (viewer.getScene() !== id) viewer.loadScene(id); }
+
+let shown = null;
+function markScene(id) {
+  shown = id;
+  document.getElementById("where-name").textContent = byId[id].name;
+  for (const s of SPOTS) {
+    dots[s.id].classList.toggle("active", s.id === id);
+    buttons[s.id].setAttribute("aria-current", s.id === id ? "true" : "false");
+  }
+}
+markScene("living");
+viewer.on("scenechange", markScene);
+
+function drawCone() {
+  const s = byId[viewer.getScene()] || byId.living;
+  if (s.id !== shown) markScene(s.id);
+  const yaw = viewer.getYaw(), half = viewer.getHfov() / 2, r = 1.3;
+  const pt = a => { const t = (a * Math.PI) / 180; return [s.x + r * Math.sin(t), s.y + r * Math.cos(t)]; };
+  const [ax, ay] = pt(yaw - half), [bx, by] = pt(yaw + half);
+  cone.setAttribute("d", `M ${P(s.x, s.y)} L ${P(ax, ay)} A ${r} ${r} 0 0 1 ${P(bx, by)} Z`);
+  requestAnimationFrame(drawCone);
+}
+requestAnimationFrame(drawCone);
+</script>
+</body>
+</html>
