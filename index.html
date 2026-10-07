@@ -158,9 +158,14 @@ function hotspotsFor(from) {
   });
 }
 
+// Each spot is a tiled cube (made by make_multires.py): a small level loads first, then only the full-size
+// 3072 px tiles in view, so it stays sharp on large and high-density screens without a big download.
+const MULTIRES = { path: "/%l/%s%y_%x", fallbackPath: "/fallback/%s", extension: "jpg", tileResolution: 1024,
+                   maxLevel: 3, cubeResolution: 3072 };
 const scenes = {};
 for (const s of SPOTS) {
-  scenes[s.id] = { type: "equirectangular", panorama: "pano/" + s.id + ".jpg", yaw: s.start, pitch: -4, hotSpots: hotspotsFor(s) };
+  scenes[s.id] = { type: "multires", multiRes: { ...MULTIRES, basePath: "pano/" + s.id }, yaw: s.start, pitch: -4,
+                   hotSpots: hotspotsFor(s) };
 }
 const viewer = pannellum.viewer("pano", {
   // portrait phones get a narrower horizontal field of view so the picture is not stretched
