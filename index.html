@@ -193,12 +193,12 @@ rect(1.515, -0.102, 3.213, 0.61, "plan-cab");        // fridge + pantry wall
 rect(-0.543, 0.0, 0.372, 0.61, "plan-range");        // range
 rect(-0.605, -2.485, 1.985, -1.27, "plan-cab");      // island
 rect(-1.955, -2.485, -0.6, -1.571, "plan-table");    // dining extension
-// walls, with openings for the glass doors and the pocket door
+// walls, with openings for the windows, slider and pocket door
 line([[-3.213, -3.25], [-3.213, -3.607], [-2.92, -3.607]], "plan-wall");
 line([[-1.40, -3.607], [-1.257, -3.607], [-1.257, -7.3]], "plan-wall");
 line([[-3.213, -0.12], [-3.213, 0.61], [3.213, 0.61], [3.213, -0.24]], "plan-wall");
 line([[3.213, -1.05], [3.213, -7.3]], "plan-wall");
-line([[-3.213, -3.25], [-3.213, -0.12]], "plan-glass");   // 3-panel French doors
+line([[-3.213, -3.25], [-3.213, -0.12]], "plan-glass");   // 3 windows (Breakfast end wall)
 line([[-2.92, -3.607], [-1.40, -3.607]], "plan-glass");   // porch slider
 line([[3.213, -1.05], [3.213, -0.24]], "plan-door");      // pocket door
 el("text", { x: 0.65, y: 1.95, class: "plan-text", "text-anchor": "middle" }).textContent = "ISLAND";
