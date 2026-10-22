@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Project Cipresso · Estimate Builder</title>
+<style>
+:root{--bg:#f6f2ec;--card:#fffdf9;--ink:#2b2621;--mute:#8a7f73;--line:#e6ddd1;--gold:#a8844f;--a:#6b4f2a;--b:#4f6b5c;--warn:#b5562f}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+h1,h2,.serif{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:.01em}
+header{padding:28px 18px 12px;text-align:center}
+header .eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:11px;color:var(--gold)}
+header h1{font-size:34px;margin:6px 0 4px}header p{margin:0;color:var(--mute);font-size:13px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 14px 40px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.quick{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0 18px}
+button{font:inherit;cursor:pointer}
+.qb{border:1px solid var(--gold);background:transparent;color:var(--a);padding:9px 16px;border-radius:999px;font-size:13px;letter-spacing:.04em}
+.qb:hover,.qb.primary{background:var(--gold);color:#fff}
+section.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 2px rgba(60,40,10,.04)}
+.card>h2{margin:0;padding:14px 18px;font-size:24px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line)}
+.card>h2 span{font-family:inherit;font-size:16px;color:var(--a)}
+.grp{padding:8px 18px 2px;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--gold)}
+.row{display:flex;gap:12px;align-items:center;padding:10px 18px;border-top:1px dashed #efe7db}
+.grp+.row{border-top:0}
+.desc{flex:1;min-width:0}.desc small{display:block;color:var(--mute);font-size:12px}
+.note{display:inline-block;margin-top:4px;font-size:12px;color:#7a5a2c;background:#f5ecdc;border-radius:6px;padding:2px 7px}
+.np{display:inline-block;margin-top:4px;font-size:11px;color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:1px 6px;text-transform:uppercase;letter-spacing:.08em}
+.amt{min-width:84px;text-align:right;font-variant-numeric:tabular-nums}
+.amt.off{color:#c3b8aa;text-decoration:line-through}
+.tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex-shrink:0}
+.seg button{border:0;background:transparent;padding:6px 10px;font-size:12px;color:var(--mute);min-width:40px}
+.seg button[disabled]{opacity:.3;cursor:not-allowed}
+.seg button.on[data-v=A]{background:var(--a);color:#fff}.seg button.on[data-v=B]{background:var(--b);color:#fff}.seg button.on[data-v=N]{background:#d9cfc2;color:var(--ink)}
+.seg button small{display:block;font-size:10px;opacity:.85}
+aside{position:sticky;top:12px}
+.sum{background:#2b2621;color:#f3ebe0;border-radius:14px;padding:16px 18px}
+.sum h2{margin:0 0 8px;font-size:22px;color:#e8d3ac}
+.sum table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.sum th{font-weight:500;color:#bfae95;font-size:11px;text-transform:uppercase;letter-spacing:.1em;text-align:right;padding:4px 0}
+.sum th:first-child{text-align:left}.sum td{padding:5px 0;text-align:right;border-top:1px solid #443b31}.sum td:first-child{text-align:left;color:#d8cbb8}
+.sum td.c{color:#fff;font-weight:600}
+.sum tr.tot td{font-size:15px;border-top:1px solid #a8844f;padding-top:8px}
+.big{font-family:Georgia,serif;font-size:30px;color:#fff;margin:12px 0 2px}
+.ov{font-size:13px;color:#d8cbb8}.ov b{color:#e8d3ac}
+.share{margin-top:12px;display:flex;gap:8px}.share button{flex:1;border:1px solid #6a5a45;background:transparent;color:#e8d3ac;border-radius:8px;padding:8px;font-size:12px}
+.foot{font-size:12px;color:var(--mute);padding:6px 4px}.foot p{margin:6px 0}
+.mini{display:none}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}aside{position:static;order:-1}
+ .mini{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:9;background:#2b2621;color:#f3ebe0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));justify-content:space-between;align-items:center;font-size:13px;box-shadow:0 -4px 14px rgba(0,0,0,.15)}
+ .mini b{font-size:18px;color:#fff;font-family:Georgia,serif}body{padding-bottom:70px}}
+@media(max-width:520px){header h1{font-size:28px}.row{flex-wrap:wrap;padding:10px 14px}.desc{flex-basis:100%}.amt{margin-left:auto}.card>h2{padding:12px 14px;font-size:21px}}
+</style></head><body>
+<header><div class="eyebrow">Nina Inagawa · General Contractor</div><h1>Project Cipresso</h1><p>Simon &amp; Jane's remodel — interactive estimate. Pick A (premium), B (cost-effective) or None per line; your mix is Option C.</p></header>
+<div class="quick"><button class="qb" data-q="A">All A · premium</button><button class="qb" data-q="B">All B · cost-effective</button><button class="qb" data-q="R">Reset</button></div>
+<div class="wrap"><main id="main"></main>
+<aside><div class="sum"><h2>Your mix (Option C)</h2>
+<table id="st"></table>
+<div class="big" id="gt"></div>
+<div class="ov">With 10–20% overage: <b id="ov"></b></div>
+<div class="share"><button id="copy">Copy share link</button></div></div>
+<div class="foot"><p><b>About the sheet's subtotals:</b> <span id="disc"></span></p><p>"Not priced" lines aren't in any total. Nina: "Must take into account 10–20% overage."</p></div></aside></div>
+<div class="mini"><span>Your mix</span><b id="mgt"></b><span id="mov"></span></div>
+<script>
+// Data from "Project Cipresso Estimate" CSV. type: C=common(fixed), O=option(a/b), U=unpriced
+const DATA=[
+{id:"kitchen",name:"Kitchen",items:[
+ {g:"Demolition",d:"Demolition kitchen & debris haul away",c:1500},
+ {g:"Cabinets",k:"wall",d:"Wall cabinets — paint grade, solid maple frame",da:"INSET style",db:"SHAKER style",a:30000,b:23000},
+ {g:"Cabinets",k:"isl",d:"Island cabinets — paint grade, solid maple frame",da:"INSET style",db:"SHAKER style",a:3000,b:1500},
+ {g:"Cabinets",d:"Dove tail drawers - plywood rails",c:2000},
+ {g:"Cabinets",d:"Appliance panels - fridge and dishwasher",c:1000},
+ {g:"Cabinets",d:"Custom built hood enclosure",c:1000},
+ {g:"Cabinets",d:"Labor - installation",c:5000},
+ {g:"Countertops",k:"qz",d:"Material - Quartz (counters & breakfast table)",a:2900,b:2900},
+ {g:"Countertops",k:"bs",d:"Material - Backsplash",da:"Marble",db:"Quartz",a:5000,b:1100,n:"TBD - marble waiting on Pacific Shore Stone quote"},
+ {g:"Countertops",d:"Labor - fabrication (quartz counters and breakfast table)",c:3000,n:"TBD - need exact quote for breakfast table due to structure"},
+ {g:"Countertops",d:"Labor - fabrication (marble backsplash with ledge above range)",c:1000},
+ {g:"Electrical work",k:"rec",d:"New LED recessed lights and j-boxes x 14 total",a:2000,b:0},
+ {g:"Electrical work",k:"v120",d:"New dedicated 120V lines to appliance garages and range (3 lines)",a:3000,b:3000},
+ {g:"Electrical work",k:"ledw",d:"New LED strips for undercabinet and toe kick on 2-way switches",a:450,b:0},
+ {g:"Light fixtures",d:"Island pendants x 2",u:1},
+ {g:"Light fixtures",d:"Stove sconces x 2",u:1},
+ {g:"Light fixtures",k:"can",d:'LED recessed canned lights 2" x 10pcs',a:100,b:0},
+ {g:"Light fixtures",k:"uc",d:"Undercabinet light strips (channels, connectors, driver, wire cover, wire bundle) x 2",a:500,b:0,n:"We might have left over channels from other projects that we can use"},
+ {g:"Light fixtures",k:"tk",d:"Toe kick light strips (channels, connectors, drivers, wire cover, wire, etc) x 2",a:500,b:0},
+ {g:"Cabinet hardware",k:"hw",d:"Cabinet handles and knobs",a:500,b:100,n:"TBD - can range from $100-$1000 depending on brand"},
+ {g:"Plumbing fixtures",k:"sink",d:"Sink",a:500,b:350},
+ {g:"Plumbing fixtures",k:"fct",d:"Faucet",a:1000,b:300,n:"TBD - using Brizo Touch2O faucet as an example"},
+ {g:"Plumbing labor",d:"Labor (water line, sink & garberator, dishwasher & air gap hook up etc)",c:1000}]},
+{id:"floor",name:"Flooring",items:[
+ {k:"flr",d:"Material - engineered wood",da:"Higher grade ($8/sf)",db:"Less expensive ($3.25/sf)",a:7600,b:3325},
+ {d:"Labor plus installation material",c:4000}]},
+{id:"mill",name:"Millwork",items:[
+ {k:"base",d:"Baseboards material and labor",a:2500,b:1500},
+ {k:"stair",d:"Staircase wall & door casings at foyer 2pcs",a:7000},
+ {k:"pwain",d:"Powder room half wall wainscoting",a:2000},
+ {k:"fwain",d:"Foyer full wainscoting",a:3000}]},
+{id:"obath",name:"Office Bathroom",items:[
+ {d:"Demolition & debris haul away",c:1500},
+ {g:"Shower",d:"Tilework and waterproofing",c:5000},
+ {g:"Shower",k:"glass",d:"Glass",a:1000,b:300,n:"Custom shower glass vs standard sliding door"},
+ {g:"Vanity",k:"ovan",d:"Freestanding vanity",a:1000,b:500},
+ {g:"Toilet",k:"otoi",d:"Toilet",a:500,b:200},
+ {g:"Flooring",d:"Tilework",c:500},
+ {g:"Plumbing",d:"Labor",c:1000},
+ {g:"Plumbing",k:"ofix",d:"Fixtures",a:500,b:300}]},
+{id:"powder",name:"Powder Room",items:[
+ {k:"pvan",d:"Vanity",a:1000,b:500},
+ {d:"Mirror",u:1},
+ {k:"pfix",d:"Plumbing fixtures",a:300,b:100},
+ {k:"ptoi",d:"Toilet",a:500,b:250}]},
+{id:"paint",name:"Paint",items:[{d:"Material",c:2000},{d:"Labor",c:2000}]}];
+const OPTS=[];DATA.forEach(s=>s.items.forEach(i=>{if(i.k){i.s=s.id;OPTS.push(i)}}));
+const has=(i,v)=>v==="N"||(v==="A"?i.a!=null:i.b!=null);
+function preset(v){const o={};OPTS.forEach(i=>o[i.k]=has(i,v)?v:"N");return o}
+function totals(sel){const r={};let g=0;DATA.forEach(s=>{let t=0;s.items.forEach(i=>{if(i.c)t+=i.c;else if(i.k){const v=sel[i.k];if(v==="A")t+=i.a||0;if(v==="B")t+=i.b||0}});r[s.id]=t;g+=t});r.total=g;return r}
+if(typeof module!=="undefined"){module.exports={DATA,OPTS,preset,totals};}
+else{
+const KEY="cipresso-estimate-v1";
+function enc(sel){return OPTS.map(i=>sel[i.k]).join("")}
+function dec(str){if(!/^[ABN]+$/.test(str||"")||str.length!==OPTS.length)return null;const o={};OPTS.forEach((i,n)=>o[i.k]=has(i,str[n])?str[n]:"N");return o}
+let sel=dec(location.hash.slice(1).replace(/^c=/,""))||dec(localStorage.getItem(KEY))||preset("A");
+const $=s=>document.querySelector(s),fmt=n=>"$"+Math.round(n).toLocaleString("en-US");
+const TA=totals(preset("A")),TB=totals(preset("B"));
+function render(){const m=$("#main");m.innerHTML="";DATA.forEach(s=>{const c=document.createElement("section");c.className="card";let h=`<h2>${s.name}<span id="t-${s.id}"></span></h2>`,lg=null;
+ s.items.forEach(i=>{if(i.g&&i.g!==lg){h+=`<div class="grp">${i.g}</div>`;lg=i.g}
+  let sub="";if(i.da)sub=`<small>A: ${i.da} · B: ${i.db}</small>`;
+  const note=i.n?`<div class="note">✎ ${i.n}</div>`:"",np=i.u?`<div class="np">Not priced</div>`:"";
+  let right;
+  if(i.c!=null)right=`<span class="tag">Common</span><span class="amt">${fmt(i.c)}</span>`;
+  else if(i.u)right=`<span class="amt off" style="text-decoration:none">—</span>`;
+  else right=`<div class="seg" data-k="${i.k}">${["A","B","N"].map(v=>`<button data-v="${v}" ${has(i,v)?"":"disabled"}>${v==="N"?"None":v}${v!=="N"?`<small>${i[v.toLowerCase()]!=null?fmt(i[v.toLowerCase()]):"n/a"}</small>`:"<small>$0</small>"}</button>`).join("")}</div><span class="amt" id="a-${i.k}"></span>`;
+  h+=`<div class="row"><div class="desc">${i.d}${sub}${note}${np}</div>${right}</div>`});
+ c.innerHTML=h;m.appendChild(c)});
+ m.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{if(b.disabled)return;sel[b.parentNode.dataset.k]=b.dataset.v;update()});update()}
+function update(){const T=totals(sel);
+ document.querySelectorAll(".seg").forEach(sg=>{const k=sg.dataset.k,i=OPTS.find(o=>o.k===k);sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===sel[k]));const v=sel[k],el=$("#a-"+k);el.textContent=v==="N"?"$0":fmt(v==="A"?i.a:i.b);el.classList.toggle("off",v==="N")});
+ let rows=`<tr><th>Section</th><th>Mix</th><th>All A</th><th>All B</th></tr>`;
+ DATA.forEach(s=>{$("#t-"+s.id).textContent=fmt(T[s.id]);rows+=`<tr><td>${s.name}</td><td class="c">${fmt(T[s.id])}</td><td>${fmt(TA[s.id])}</td><td>${fmt(TB[s.id])}</td></tr>`});
+ const ov=t=>`${fmt(t*1.1)} – ${fmt(t*1.2)}`;
+ rows+=`<tr class="tot"><td>Total</td><td class="c">${fmt(T.total)}</td><td>${fmt(TA.total)}</td><td>${fmt(TB.total)}</td></tr>`;
+ rows+=`<tr><td>+10%</td><td class="c">${fmt(T.total*1.1)}</td><td>${fmt(TA.total*1.1)}</td><td>${fmt(TB.total*1.1)}</td></tr><tr><td>+20%</td><td class="c">${fmt(T.total*1.2)}</td><td>${fmt(TA.total*1.2)}</td><td>${fmt(TB.total*1.2)}</td></tr>`;
+ $("#st").innerHTML=rows;$("#gt").textContent=fmt(T.total);$("#ov").textContent=ov(T.total);$("#mgt").textContent=fmt(T.total);$("#mov").textContent="+10–20%: "+ov(T.total);
+ const e=enc(sel);localStorage.setItem(KEY,e);history.replaceState(null,"","#c="+e)}
+document.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const q=b.dataset.q;sel=q==="R"?preset("A"):preset(q);if(q==="R"){localStorage.removeItem(KEY)}update()});
+$("#copy").onclick=()=>{navigator.clipboard?.writeText(location.href).then(()=>{$("#copy").textContent="Link copied ✓";setTimeout(()=>$("#copy").textContent="Copy share link",1600)})};
+window.addEventListener("hashchange",()=>{const d=dec(location.hash.slice(1).replace(/^c=/,""));if(d){sel=d;update()}});
+const common=DATA.reduce((t,s)=>t+s.items.reduce((u,i)=>u+(i.c||0),0),0);
+$("#disc").textContent=`Common items total ${fmt(common)}. All A incl. common = ${fmt(TA.total)} (options only ${fmt(TA.total-common)}) — matches the sheet's 107,850, so that subtotal already includes common. All B incl. common = ${fmt(TB.total)} (options only ${fmt(TB.total-common)}); the sheet shows 78,050, which is ${fmt(78050-TB.total)} higher — exactly the Flooring B line-total (3,325 + 4,000), suggesting flooring was double-counted. Section totals all match the sheet.`;
+render()}
+</script></body></html>
