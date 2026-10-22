@@ -64,7 +64,7 @@ aside{position:sticky;top:12px}
 // Data from "Project Cipresso Estimate" CSV. type: C=common(fixed), O=option(a/b), U=unpriced
 const DATA=[
 {id:"kitchen",name:"Kitchen",items:[
- {g:"Demolition",d:"Demolition kitchen & debris haul away",c:1500},
+ {g:"Demolition",d:"Demolition kitchen & debris haul away",c:1500,n:"Nina: ~$3,000 total demo split evenly between kitchen and bathroom."},
  {g:"Cabinets",k:"wall",d:"Wall cabinets — paint grade, solid maple frame",da:"INSET style",db:"SHAKER style",a:30000,b:23000},
  {g:"Cabinets",k:"isl",d:"Island cabinets — paint grade, solid maple frame",da:"INSET style",db:"SHAKER style",a:3000,b:1500},
  {g:"Cabinets",d:"Dove tail drawers - plywood rails",c:2000},
@@ -96,7 +96,7 @@ const DATA=[
  {k:"pwain",d:"Powder room half wall wainscoting",a:2000},
  {k:"fwain",d:"Foyer full wainscoting",a:3000}]},
 {id:"obath",name:"Office Bathroom",items:[
- {d:"Demolition & debris haul away",c:1500},
+ {d:"Demolition & debris haul away",c:1500,n:"Nina: ~$3,000 total demo split evenly between kitchen and bathroom."},
  {g:"Shower",d:"Tilework and waterproofing",c:5000},
  {g:"Shower",k:"glass",d:"Glass",a:1000,b:300,n:"Custom shower glass vs standard sliding door"},
  {g:"Vanity",k:"ovan",d:"Freestanding vanity",a:1000,b:500},
@@ -109,7 +109,8 @@ const DATA=[
  {d:"Mirror",u:1},
  {k:"pfix",d:"Plumbing fixtures",a:300,b:100},
  {k:"ptoi",d:"Toilet",a:500,b:250}]},
-{id:"paint",name:"Paint",items:[{d:"Material",c:2000},{d:"Labor",c:2000}]}];
+{id:"paint",name:"Paint",items:[{d:"Material",c:2000},{d:"Labor",c:2000}]},
+{id:"clean",name:"Post-construction Cleaning",items:[{d:"Post-construction cleaning (before move-back-in)",c:600,n:"$500–600 est. per Nina — $600 used in totals (conservative)"}]}];
 const OPTS=[];DATA.forEach(s=>s.items.forEach(i=>{if(i.k){i.s=s.id;OPTS.push(i)}}));
 const has=(i,v)=>v==="N"||(v==="A"?i.a!=null:i.b!=null);
 function preset(v){const o={};OPTS.forEach(i=>o[i.k]=has(i,v)?v:"N");return o}
@@ -146,6 +147,6 @@ document.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const q=b.dataset.q;s
 $("#copy").onclick=()=>{navigator.clipboard?.writeText(location.href).then(()=>{$("#copy").textContent="Link copied ✓";setTimeout(()=>$("#copy").textContent="Copy share link",1600)})};
 window.addEventListener("hashchange",()=>{const d=dec(location.hash.slice(1).replace(/^c=/,""));if(d){sel=d;update()}});
 const common=DATA.reduce((t,s)=>t+s.items.reduce((u,i)=>u+(i.c||0),0),0);
-$("#disc").textContent=`Common items total ${fmt(common)}. All A incl. common = ${fmt(TA.total)} (options only ${fmt(TA.total-common)}) — matches the sheet's 107,850, so that subtotal already includes common. All B incl. common = ${fmt(TB.total)} (options only ${fmt(TB.total-common)}); the sheet shows 78,050, which is ${fmt(78050-TB.total)} higher — exactly the Flooring B line-total (3,325 + 4,000), suggesting flooring was double-counted. Section totals all match the sheet.`;
+$("#disc").textContent=`Common items total ${fmt(common)}. All A incl. common = ${fmt(TA.total)} (options only ${fmt(TA.total-common)}) — matches the sheet's 107,850, so that subtotal already includes common. All B incl. common = ${fmt(TB.total)} (options only ${fmt(TB.total-common)}); the sheet shows 78,050, which is ${fmt(78050-TB.total)} higher — exactly the Flooring B line-total (3,325 + 4,000), suggesting flooring was double-counted. Section totals all match the sheet. Post-construction cleaning ($600, est. $500–600) was added after the sheet and is included in all totals above, so they are $600 higher than the sheet figures.`;
 render()}
 </script></body></html>
