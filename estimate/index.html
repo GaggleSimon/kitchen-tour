@@ -110,20 +110,28 @@ const DATA=[
  {k:"pfix",d:"Plumbing fixtures",a:300,b:100},
  {k:"ptoi",d:"Toilet",a:500,b:250}]},
 {id:"paint",name:"Paint",items:[{d:"Material",c:2000},{d:"Labor",c:2000}]},
+{id:"app",ext:1,name:"Appliances",sub:"Universal Appliance · invoice 255075 · purchased directly by owner (not through GC)",items:[
+ {d:"Thermador T36IB100SP 36\" panel-ready fridge",c:9755},
+ {d:"Bosch HIS5657U 36\" induction range",c:5699},
+ {d:"Thermador Sapphire DWHD660EPR panel-ready dishwasher",c:500,n:"Free promo gift; $500 upgrade"},
+ {d:"Sales tax — fridge + range (invoice total $16,651.69 tax-incl.)",c:1197.69},
+ {d:"Sales tax on $500 upgrade @ 7.75%",c:38.75},
+ {d:"Delivery",c:0,n:"Free delivery; installation not included"}],note:"Estimate — updated invoice with dishwasher not yet signed; free delivery, install not included."},
 {id:"clean",name:"Post-construction Cleaning",items:[{d:"Post-construction cleaning (before move-back-in)",c:600,n:"$500–600 est. per Nina — $600 used in totals (conservative)"}]}];
 const OPTS=[];DATA.forEach(s=>s.items.forEach(i=>{if(i.k){i.s=s.id;OPTS.push(i)}}));
 const has=(i,v)=>v==="N"||(v==="A"?i.a!=null:i.b!=null);
 function preset(v){const o={};OPTS.forEach(i=>o[i.k]=has(i,v)?v:"N");return o}
-function totals(sel){const r={};let g=0;DATA.forEach(s=>{let t=0;s.items.forEach(i=>{if(i.c)t+=i.c;else if(i.k){const v=sel[i.k];if(v==="A")t+=i.a||0;if(v==="B")t+=i.b||0}});r[s.id]=t;g+=t});r.total=g;return r}
+function totals(sel,app=true){const r={};let g=0;DATA.forEach(s=>{let t=0;s.items.forEach(i=>{if(i.c)t+=i.c;else if(i.k){const v=sel[i.k];if(v==="A")t+=i.a||0;if(v==="B")t+=i.b||0}});r[s.id]=t;if(!s.ext||app)g+=t});r.total=g;return r}
 if(typeof module!=="undefined"){module.exports={DATA,OPTS,preset,totals};}
 else{
 const KEY="cipresso-estimate-v1";
-function enc(sel){return OPTS.map(i=>sel[i.k]).join("")}
-function dec(str){if(!/^[ABN]+$/.test(str||"")||str.length!==OPTS.length)return null;const o={};OPTS.forEach((i,n)=>o[i.k]=has(i,str[n])?str[n]:"N");return o}
+let APP=true;
+function enc(sel){return OPTS.map(i=>sel[i.k]).join("")+(APP?"":"-x")}
+function dec(str){str=str||"";const x=/-x$/.test(str);str=str.replace(/-x$/,"");if(!/^[ABN]+$/.test(str||"")||str.length!==OPTS.length)return null;const o={};OPTS.forEach((i,n)=>o[i.k]=has(i,str[n])?str[n]:"N");APP=!x;return o}
 let sel=dec(location.hash.slice(1).replace(/^c=/,""))||dec(localStorage.getItem(KEY))||preset("A");
-const $=s=>document.querySelector(s),fmt=n=>"$"+Math.round(n).toLocaleString("en-US");
-const TA=totals(preset("A")),TB=totals(preset("B"));
-function render(){const m=$("#main");m.innerHTML="";DATA.forEach(s=>{const c=document.createElement("section");c.className="card";let h=`<h2>${s.name}<span id="t-${s.id}"></span></h2>`,lg=null;
+const $=s=>document.querySelector(s),fmt=n=>"$"+(Number.isInteger(n)?n.toLocaleString("en-US"):n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}));const fr=n=>"$"+Math.round(n).toLocaleString("en-US");
+let TA,TB;
+function render(){const m=$("#main");m.innerHTML="";DATA.forEach(s=>{const c=document.createElement("section");c.className="card";let h=`<h2>${s.name}<span id="t-${s.id}"></span></h2>`,lg=null;if(s.ext)h+=`<div class="row" style="background:#f8f2e7"><div class="desc"><small>${s.sub}</small><div class="note">✎ ${s.note}</div></div><label style="font-size:13px;white-space:nowrap"><input type="checkbox" id="appt" ${APP?"checked":""}> Include in grand total</label></div>`;
  s.items.forEach(i=>{if(i.g&&i.g!==lg){h+=`<div class="grp">${i.g}</div>`;lg=i.g}
   let sub="";if(i.da)sub=`<small>A: ${i.da} · B: ${i.db}</small>`;
   const note=i.n?`<div class="note">✎ ${i.n}</div>`:"",np=i.u?`<div class="np">Not priced</div>`:"";
@@ -133,20 +141,20 @@ function render(){const m=$("#main");m.innerHTML="";DATA.forEach(s=>{const c=doc
   else right=`<div class="seg" data-k="${i.k}">${["A","B","N"].map(v=>`<button data-v="${v}" ${has(i,v)?"":"disabled"}>${v==="N"?"None":v}${v!=="N"?`<small>${i[v.toLowerCase()]!=null?fmt(i[v.toLowerCase()]):"n/a"}</small>`:"<small>$0</small>"}</button>`).join("")}</div><span class="amt" id="a-${i.k}"></span>`;
   h+=`<div class="row"><div class="desc">${i.d}${sub}${note}${np}</div>${right}</div>`});
  c.innerHTML=h;m.appendChild(c)});
- m.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{if(b.disabled)return;sel[b.parentNode.dataset.k]=b.dataset.v;update()});update()}
-function update(){const T=totals(sel);
+ $("#appt").onchange=e=>{APP=e.target.checked;update()};m.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{if(b.disabled)return;sel[b.parentNode.dataset.k]=b.dataset.v;update()});update()}
+function update(){TA=totals(preset("A"),APP);TB=totals(preset("B"),APP);const T=totals(sel,APP);const ab=$("#appt");if(ab)ab.checked=APP;
  document.querySelectorAll(".seg").forEach(sg=>{const k=sg.dataset.k,i=OPTS.find(o=>o.k===k);sg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===sel[k]));const v=sel[k],el=$("#a-"+k);el.textContent=v==="N"?"$0":fmt(v==="A"?i.a:i.b);el.classList.toggle("off",v==="N")});
  let rows=`<tr><th>Section</th><th>Mix</th><th>All A</th><th>All B</th></tr>`;
- DATA.forEach(s=>{$("#t-"+s.id).textContent=fmt(T[s.id]);rows+=`<tr><td>${s.name}</td><td class="c">${fmt(T[s.id])}</td><td>${fmt(TA[s.id])}</td><td>${fmt(TB[s.id])}</td></tr>`});
- const ov=t=>`${fmt(t*1.1)} – ${fmt(t*1.2)}`;
- rows+=`<tr class="tot"><td>Total</td><td class="c">${fmt(T.total)}</td><td>${fmt(TA.total)}</td><td>${fmt(TB.total)}</td></tr>`;
- rows+=`<tr><td>+10%</td><td class="c">${fmt(T.total*1.1)}</td><td>${fmt(TA.total*1.1)}</td><td>${fmt(TB.total*1.1)}</td></tr><tr><td>+20%</td><td class="c">${fmt(T.total*1.2)}</td><td>${fmt(TA.total*1.2)}</td><td>${fmt(TB.total*1.2)}</td></tr>`;
- $("#st").innerHTML=rows;$("#gt").textContent=fmt(T.total);$("#ov").textContent=ov(T.total);$("#mgt").textContent=fmt(T.total);$("#mov").textContent="+10–20%: "+ov(T.total);
- const e=enc(sel);localStorage.setItem(KEY,e);history.replaceState(null,"","#c="+e)}
-document.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const q=b.dataset.q;sel=q==="R"?preset("A"):preset(q);if(q==="R"){localStorage.removeItem(KEY)}update()});
+ DATA.forEach(s=>{$("#t-"+s.id).textContent=fmt(T[s.id]);const off=s.ext&&!APP,st=off?' style="opacity:.4;text-decoration:line-through"':"";rows+=`<tr${st}><td>${s.name}${s.ext?" <small>(owner-paid)</small>":""}</td><td class="c">${fr(T[s.id])}</td><td>${fr(TA[s.id])}</td><td>${fr(TB[s.id])}</td></tr>`});
+ const ov=t=>`${fr(t*1.1)} – ${fr(t*1.2)}`;
+ rows+=`<tr class="tot"><td>Total</td><td class="c">${fr(T.total)}</td><td>${fr(TA.total)}</td><td>${fr(TB.total)}</td></tr>`;
+ rows+=`<tr><td>+10%</td><td class="c">${fr(T.total*1.1)}</td><td>${fr(TA.total*1.1)}</td><td>${fr(TB.total*1.1)}</td></tr><tr><td>+20%</td><td class="c">${fr(T.total*1.2)}</td><td>${fr(TA.total*1.2)}</td><td>${fr(TB.total*1.2)}</td></tr>`;
+ $("#st").innerHTML=rows;$("#gt").textContent=fr(T.total);$("#ov").textContent=ov(T.total);$("#mgt").textContent=fr(T.total);$("#mov").textContent="+10–20%: "+ov(T.total);
+ if(!sel)return;const e=enc(sel);localStorage.setItem(KEY,e);history.replaceState(null,"","#c="+e)}
+document.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const q=b.dataset.q;sel=q==="R"?preset("A"):preset(q);if(q==="R"){APP=true;localStorage.removeItem(KEY)}update()});
 $("#copy").onclick=()=>{navigator.clipboard?.writeText(location.href).then(()=>{$("#copy").textContent="Link copied ✓";setTimeout(()=>$("#copy").textContent="Copy share link",1600)})};
 window.addEventListener("hashchange",()=>{const d=dec(location.hash.slice(1).replace(/^c=/,""));if(d){sel=d;update()}});
-const common=DATA.reduce((t,s)=>t+s.items.reduce((u,i)=>u+(i.c||0),0),0);
-$("#disc").textContent=`Common items total ${fmt(common)}. All A incl. common = ${fmt(TA.total)} (options only ${fmt(TA.total-common)}) — matches the sheet's 107,850, so that subtotal already includes common. All B incl. common = ${fmt(TB.total)} (options only ${fmt(TB.total-common)}); the sheet shows 78,050, which is ${fmt(78050-TB.total)} higher — exactly the Flooring B line-total (3,325 + 4,000), suggesting flooring was double-counted. Section totals all match the sheet. Post-construction cleaning ($600, est. $500–600) was added after the sheet and is included in all totals above, so they are $600 higher than the sheet figures.`;
+const common=DATA.filter(s=>!s.ext).reduce((t,s)=>t+s.items.reduce((u,i)=>u+(i.c||0),0),0);
+const TA0=totals(preset("A"),false),TB0=totals(preset("B"),false);$("#disc").textContent=`Common items (GC) total ${fmt(common)}. All A incl. common = ${fmt(TA0.total)} (options only ${fmt(TA0.total-common)}) — matches the sheet's 107,850, so that subtotal already includes common. All B incl. common = ${fmt(TB0.total)} (options only ${fmt(TB0.total-common)}); the sheet shows 78,050, which is ${fmt(78050-TB0.total+600)} higher — exactly the Flooring B line-total (3,325 + 4,000), suggesting flooring was double-counted. Section totals all match the sheet. Post-construction cleaning ($600, est. $500–600) was added after the sheet and is included in all totals above, so they are $600 higher than the sheet figures. Owner-paid appliances (~$17,190) are not part of Nina's sheet and can be toggled in/out of the grand total.`;
 render()}
 </script></body></html>
