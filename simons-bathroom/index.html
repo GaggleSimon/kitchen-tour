@@ -61,7 +61,8 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 
 .plan-card { left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); padding: 10px 12px 12px; width: 236px; max-width: calc(100% - 32px); }
 .plan-card .label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
-.plan-card svg { display: block; width: 100%; height: auto; }
+.plan-card svg { display: block; width: 100%; height: auto; max-height: min(340px, 42vh); margin: 0 auto; }
+.plan-hall { fill: var(--bg); opacity: 0.55; }
 .spots { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .spots button {
   width: 100%; font: 500 0.78rem/1.2 var(--font-ui); color: var(--ink); background: transparent;
@@ -69,7 +70,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 }
 .spots button:hover { border-color: var(--brass); }
 .links { margin: 10px 0 0; display: flex; justify-content: space-between; gap: 8px; font-size: 0.78rem; }
-.links a { color: var(--brass); text-decoration: none; font-weight: 600; }
+.links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
 .spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
@@ -80,7 +81,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 .plan-glass { stroke: var(--brass); stroke-width: 1.4; fill: none; }
 .plan-door { stroke: var(--muted); stroke-width: 0.9; fill: none; stroke-dasharray: 3 2; }
 .plan-cab { fill: var(--cabinet); stroke: var(--muted); stroke-width: 0.6; }
-.plan-vanity { fill: var(--navy); stroke: none; }
+.plan-vanity { fill: var(--cabinet); stroke: var(--muted); stroke-width: 0.6; }
 .plan-shower { fill: var(--brass-soft); stroke: none; }
 .plan-cone { fill: var(--brass-soft); stroke: none; }
 .plan-dot { fill: var(--panel); stroke: var(--brass); stroke-width: 1.8; cursor: pointer; }
@@ -119,12 +120,12 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 
   <div class="card title-card">
     <h1>Simon's Bathroom</h1>
-    <div class="where"><strong id="where-name">Doorway</strong><span class="hint">Drag to look around · click a blue marker to walk</span></div>
+    <div class="where"><strong id="where-name">Hallway</strong><span class="hint">Drag to look around · click a blue marker to walk</span></div>
   </div>
 
   <div class="card plan-card">
     <p class="label">Floor plan · you are here</p>
-    <svg id="plan" viewBox="-40 -60 80 120" aria-hidden="true"></svg>
+    <svg id="plan" viewBox="-40 -60 80 162" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
     <p class="links"><a href="renders/">Still renders</a><a href="drawings/">Drawings</a></p>
   </div>
@@ -137,6 +138,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 // yaw is its clockwise angle from +y.
 const EYE = 60;
 const SPOTS = [
+  { id: "hall", name: "Hallway", x: 9.6, y: -90, start: 0 },
   { id: "doorway", name: "Doorway", x: 6, y: -45, start: 0 },
   { id: "toilet", name: "By the window", x: 4, y: -12, start: 20 },
   { id: "shower", name: "In the shower", x: 11, y: 30, start: 180 },
@@ -173,7 +175,7 @@ for (const s of SPOTS) {
 }
 const viewer = pannellum.viewer("pano", {
   // portrait phones get a narrower horizontal field of view so the picture is not stretched
-  default: { firstScene: "doorway", autoLoad: true, sceneFadeDuration: 700, hfov: innerHeight > innerWidth ? 75 : 105,
+  default: { firstScene: "hall", autoLoad: true, sceneFadeDuration: 700, hfov: innerHeight > innerWidth ? 75 : 105,
              minHfov: 40, maxHfov: 120, showControls: true },
   scenes,
 });
@@ -191,6 +193,10 @@ function el(tag, attrs, parent = plan) {
 const rect = (x0, y0, x1, y1, cls) => el("rect", { x: x0, y: -y1, width: x1 - x0, height: y1 - y0, class: cls });
 const line = (pts, cls) => el("polyline", { points: pts.map(p => P(...p)).join(" "), class: cls });
 
+// the hall outside the door (render-only staging, scripts/photoreal/hall_staging.py), open toward the bottom
+rect(-36, -102, 30, -53.6, "plan-hall");
+line([[-30, -53.6], [-36, -53.6], [-36, -102]], "plan-wall");
+line([[30, -53.6], [30, -102]], "plan-wall");
 el("polygon", { class: "plan-floor", points: [[-30, -53.6], [30, -53.6], [30, 53.6], [-8.6, 53.6], [-8.6, 8.1], [-30, 8.1]].map(p => P(...p)).join(" ") });
 rect(-8.6, 12.1, 30, 53.6, "plan-shower");             // shower
 rect(-30, -53.6, -11.5, -23.6, "plan-vanity");         // vanity
@@ -237,11 +243,11 @@ function markScene(id) {
     buttons[s.id].setAttribute("aria-current", s.id === id ? "true" : "false");
   }
 }
-markScene("doorway");
+markScene("hall");
 viewer.on("scenechange", markScene);
 
 function drawCone() {
-  const s = byId[viewer.getScene()] || byId.doorway;
+  const s = byId[viewer.getScene()] || byId.hall;
   if (s.id !== shown) markScene(s.id);
   const yaw = viewer.getYaw(), half = viewer.getHfov() / 2, r = 24;
   const pt = a => { const t = (a * Math.PI) / 180; return [s.x + r * Math.sin(t), s.y + r * Math.cos(t)]; };
