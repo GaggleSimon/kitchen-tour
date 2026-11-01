@@ -68,7 +68,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 }
 .spots button:hover { border-color: var(--brass); }
 .links { margin: 10px 0 0; display: flex; justify-content: space-between; gap: 8px; font-size: 0.78rem; }
-.links a { color: var(--brass); text-decoration: none; font-weight: 600; }
+.links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
 .spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
@@ -125,7 +125,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
     <p class="label">Floor plan · you are here</p>
     <svg id="plan" viewBox="-3.6 -0.95 7.2 8.25" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
-    <p class="links"><a href="renders/">Still renders</a><a href="drawings/">Drawings</a></p>
+    <p class="links"><a href="renders/">Still renders</a><a href="drawings/">Drawings</a><a href="simons-bathroom/">Simon's bath</a></p>
   </div>
 </div>
 
