@@ -11,27 +11,65 @@
 :root { --bg:#f6f2ea; --ink:#2b2722; --muted:#7c7263; --line:#ddd3c3; --brass:#9c7135; color-scheme: light; }
 @media (prefers-color-scheme: dark) { :root { --bg:#171614; --ink:#efe8dc; --muted:#b0a593; --line:#4a453d; --brass:#d3a764; color-scheme: dark; } }
 body { margin:0; background:var(--bg); color:var(--ink); font-family:"Figtree","Segoe UI",system-ui,sans-serif; }
-header { max-width:1200px; margin:0 auto; padding:28px 16px 8px; display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
+header { max-width:1400px; margin:0 auto; padding:28px 16px 8px; display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
 h1 { margin:0; font-family:"Libre Caslon Display",Georgia,serif; font-weight:400; font-size:2rem; }
 nav a { color:var(--brass); text-decoration:none; font-weight:600; margin-left:16px; }
-main { max-width:1200px; margin:0 auto; padding:8px 16px 40px; display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr)); gap:20px; }
+.legend { max-width:1400px; margin:0 auto; padding:4px 16px 0; display:grid; grid-template-columns:1fr 1fr; gap:20px; font-size:0.9rem; color:var(--muted); }
+.legend strong { color:var(--ink); }
+main { max-width:1400px; margin:0 auto; padding:8px 16px 40px; }
+section { margin-top:22px; }
+h2 { margin:0 0 8px; font-size:0.95rem; font-weight:600; }
+.pair { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 figure { margin:0; } img { width:100%; height:auto; display:block; border-radius:8px; border:1px solid var(--line); }
-figcaption { margin-top:6px; font-size:0.86rem; color:var(--muted); }
-figure.wide { grid-column:1 / -1; }
+figcaption { margin-top:6px; font-size:0.82rem; color:var(--muted); }
+@media (max-width: 720px) { .pair, .legend { grid-template-columns:1fr; gap:12px; } .legend { gap:4px; } }
 </style>
 </head>
 <body>
 <header><h1>Jane's Kitchen &middot; Renders</h1><nav><a href="../">360&deg; tour</a><a href="../drawings/">Drawings</a></nav></header>
-<main>
-  <figure class="wide"><a href="back_wall_elevation.jpg"><img src="back_wall_elevation.jpg" alt="Back wall elevation: the whole cabinet wall straight on, flat, wall to wall" loading="lazy"></a><figcaption>Back wall elevation (flat, straight on, wall to wall)</figcaption></figure>
-  <figure><a href="front_elevation.jpg"><img src="front_elevation.jpg" alt="From the living room, straight on" loading="lazy"></a><figcaption>From the living room, straight on</figcaption></figure>
-  <figure><a href="living_pov.jpg"><img src="living_pov.jpg" alt="Living room, standing" loading="lazy"></a><figcaption>Living room, standing</figcaption></figure>
-  <figure><a href="stairs_pov.jpg"><img src="stairs_pov.jpg" alt="From the stairs" loading="lazy"></a><figcaption>From the stairs</figcaption></figure>
-  <figure><a href="three-quarter_left.jpg"><img src="three-quarter_left.jpg" alt="Three-quarter, left" loading="lazy"></a><figcaption>Three-quarter, left</figcaption></figure>
-  <figure><a href="three-quarter_right.jpg"><img src="three-quarter_right.jpg" alt="Three-quarter, right" loading="lazy"></a><figcaption>Three-quarter, right</figcaption></figure>
-  <figure><a href="island_hero.jpg"><img src="island_hero.jpg" alt="Island and range" loading="lazy"></a><figcaption>Island and range</figcaption></figure>
-  <figure><a href="toward_windows.jpg"><img src="toward_windows.jpg" alt="Toward the glass doors" loading="lazy"></a><figcaption>Toward the glass doors</figcaption></figure>
-  <figure><a href="dining.jpg"><img src="dining.jpg" alt="From the dining area" loading="lazy"></a><figcaption>From the dining area</figcaption></figure>
-</main>
+<div class="legend">
+  <p><strong>Kitchen A</strong> &middot; current design with the new left tower (drawers under tall doors)</p>
+  <p><strong>Kitchen B</strong> &middot; A plus slim beaded fronts, white top molding and a fluted hood</p>
+</div>
+<main id="views"></main>
+<script>
+// Each view as a Kitchen A / Kitchen B pair: A images sit here, B images in b/
+const VIEWS = [
+  ["back_wall_elevation", "Back wall elevation (flat, straight on, wall to wall)"],
+  ["island_elevation", "Island elevation (flat, straight on, facing the living room)"],
+  ["front_elevation", "From the living room, straight on"],
+  ["living_pov", "Living room, standing"],
+  ["stairs_pov", "From the stairs"],
+  ["three-quarter_left", "Three-quarter, left"],
+  ["three-quarter_right", "Three-quarter, right"],
+  ["island_hero", "Island and range"],
+  ["toward_windows", "Toward the glass doors"],
+  ["dining", "From the dining area"],
+];
+const main = document.getElementById("views");
+for (const [file, title] of VIEWS) {
+  const sec = document.createElement("section");
+  const h = document.createElement("h2");
+  h.textContent = title;
+  const pair = document.createElement("div");
+  pair.className = "pair";
+  for (const [label, src] of [["Kitchen A", file + ".jpg"], ["Kitchen B", "b/" + file + ".jpg"]]) {
+    const fig = document.createElement("figure");
+    const a = document.createElement("a");
+    a.href = src;
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = title + ", " + label;
+    img.loading = "lazy";
+    a.appendChild(img);
+    const cap = document.createElement("figcaption");
+    cap.textContent = label;
+    fig.append(a, cap);
+    pair.appendChild(fig);
+  }
+  sec.append(h, pair);
+  main.appendChild(sec);
+}
+</script>
 </body>
 </html>
