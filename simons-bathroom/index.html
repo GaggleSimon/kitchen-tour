@@ -73,6 +73,12 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 .links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
+.design { display: grid; grid-template-columns: 1fr 1fr; margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.design button { font: 600 0.8rem/1.2 var(--font-ui); color: var(--ink); background: transparent; border: 0; border-radius: 999px;
+  padding: 6px 8px; cursor: pointer; }
+.design button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.design button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.design-note { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.3; color: var(--muted); min-height: 2.6em; }
 .spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
 /* plan drawing */
@@ -106,7 +112,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   .title-card .hint { display: none; }
   /* phones: a compact strip, small plan beside the spot list */
   .plan-card { right: 16px; width: auto; display: grid; grid-template-columns: 104px 1fr; column-gap: 12px; align-items: center; }
-  .plan-card .label { grid-column: 1 / -1; }
+  .plan-card .label, .design, .design-note { grid-column: 1 / -1; }
   .spots { margin: 0; grid-template-columns: 1fr; gap: 5px; }
   .spots button { padding: 5px 8px; font-size: 0.74rem; }
   .pnlm-controls-container { display: none; }
