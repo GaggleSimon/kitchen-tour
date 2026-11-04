@@ -17,11 +17,13 @@ nav a { color:var(--brass); text-decoration:none; font-weight:600; margin-left:1
 main { max-width:1200px; margin:0 auto; padding:8px 16px 40px; display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr)); gap:20px; }
 figure { margin:0; } img { width:100%; height:auto; display:block; border-radius:8px; border:1px solid var(--line); }
 figcaption { margin-top:6px; font-size:0.86rem; color:var(--muted); }
+figure.wide { grid-column:1 / -1; }
 </style>
 </head>
 <body>
 <header><h1>Jane's Kitchen &middot; Renders</h1><nav><a href="../">360&deg; tour</a><a href="../drawings/">Drawings</a></nav></header>
 <main>
+  <figure class="wide"><a href="back_wall_elevation.jpg"><img src="back_wall_elevation.jpg" alt="Back wall elevation: the whole cabinet wall straight on, flat, wall to wall" loading="lazy"></a><figcaption>Back wall elevation (flat, straight on, wall to wall)</figcaption></figure>
   <figure><a href="front_elevation.jpg"><img src="front_elevation.jpg" alt="From the living room, straight on" loading="lazy"></a><figcaption>From the living room, straight on</figcaption></figure>
   <figure><a href="living_pov.jpg"><img src="living_pov.jpg" alt="Living room, standing" loading="lazy"></a><figcaption>Living room, standing</figcaption></figure>
   <figure><a href="stairs_pov.jpg"><img src="stairs_pov.jpg" alt="From the stairs" loading="lazy"></a><figcaption>From the stairs</figcaption></figure>
