@@ -155,7 +155,7 @@ const byId = Object.fromEntries(SPOTS.map(s => [s.id, s]));
 // Two designs to compare, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and view.
 const DESIGNS = {
   a: { label: "Kitchen A", base: "pano/", note: "Current design with the new left tower (drawers under tall doors)." },
-  b: { label: "Kitchen B", base: "pano_b/", note: "A plus slim beaded fronts, white top molding and a fluted hood." },
+  b: { label: "Kitchen B", base: "pano_b/", note: "The cream kitchen photo: lighter cream, inset beaded doors and drawers, a plain painted hood and nickel knobs." },
 };
 const sid = (d, spot) => d + "-" + spot;
 const spotOf = id => id.slice(2), designOf = id => id[0];
