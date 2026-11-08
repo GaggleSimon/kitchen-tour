@@ -136,7 +136,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
     <p class="label">Floor plan · you are here</p>
     <svg id="plan" viewBox="-3.6 -0.95 7.2 8.25" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
-    <p class="links"><a href="renders/">Still renders</a><a href="drawings/">Drawings</a><a href="simons-bathroom/">Simon's bath</a></p>
+    <p class="links"><a href="renders/">Still renders</a><a href="drawings/">Drawings</a><a href="simons-bathroom/">Simon's bath</a><a href="simons-bathroom-2/">Bathroom 2</a></p>
   </div>
 </div>
 
@@ -155,7 +155,7 @@ const byId = Object.fromEntries(SPOTS.map(s => [s.id, s]));
 // Two designs to compare, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and view.
 const DESIGNS = {
   a: { label: "Kitchen A", base: "pano/", note: "Current design with the new left tower (drawers under tall doors)." },
-  b: { label: "Kitchen B", base: "pano_b/", note: "The cream kitchen photo: lighter cream, inset beaded doors and drawers, a plain painted hood and nickel knobs." },
+  b: { label: "Kitchen B", base: "pano_b/", note: "Lighter cream with inset beaded doors and drawers, aged-brass knobs, a curved painted hood up to a 10" drywall soffit, marble to the hood, brass cup pulls on the island and crown at the ceiling." },
 };
 const sid = (d, spot) => d + "-" + spot;
 const spotOf = id => id.slice(2), designOf = id => id[0];
