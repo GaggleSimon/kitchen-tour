@@ -155,7 +155,7 @@ const byId = Object.fromEntries(SPOTS.map(s => [s.id, s]));
 // Two designs to compare, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and view.
 const DESIGNS = {
   a: { label: "Kitchen A", base: "pano/", note: "Current design with the new left tower (drawers under tall doors)." },
-  b: { label: "Kitchen B", base: "pano_b/", note: "Lighter cream with inset beaded doors and drawers, aged-brass knobs, a curved painted hood up to a 10-inch drywall soffit, tall single-door uppers, a 7-inch spice pull-out by the range, drawer stacks with no rails between drawers and the bottom two sharing one frame, base runs and towers on arched furniture feet, the left tower brought forward flush with the fridge, a painted toe kick under the fridge, marble to the hood, square-edged black counters, an island on a toe kick with flush drawers and brass cup pulls, and crown at the ceiling." },
+  b: { label: "Kitchen B", base: "pano_b/", note: "Lighter cream with inset beaded doors and drawers, aged-brass knobs, a curved painted hood up to a 10-inch drywall soffit, tall single-door uppers, a 7-inch spice pull-out by the range, drawer stacks with no rails between drawers and the bottom two sharing one frame, base runs and towers on arched furniture feet, the left tower brought forward flush with the fridge, a painted toe kick under the fridge, marble to the hood, square-edged black counters, an island on a toe kick with flat flush drawers and brass cup pulls, a drop-in fireclay sink and brass bar pulls on its trash pull-out and dishwasher, and crown at the ceiling." },
 };
 const sid = (d, spot) => d + "-" + spot;
 const spotOf = id => id.slice(2), designOf = id => id[0];
