@@ -11,18 +11,18 @@
 :root { --bg:#f6f2ea; --ink:#2b2722; --muted:#7c7263; --line:#ddd3c3; --brass:#9c7135; color-scheme: light; }
 @media (prefers-color-scheme: dark) { :root { --bg:#171614; --ink:#efe8dc; --muted:#b0a593; --line:#4a453d; --brass:#d3a764; color-scheme: dark; } }
 body { margin:0; background:var(--bg); color:var(--ink); font-family:"Figtree","Segoe UI",system-ui,sans-serif; }
-header { max-width:1400px; margin:0 auto; padding:28px 16px 8px; display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
+header { max-width:1900px; margin:0 auto; padding:28px 16px 8px; display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; }
 h1 { margin:0; font-family:"Libre Caslon Display",Georgia,serif; font-weight:400; font-size:2rem; }
 nav a { color:var(--brass); text-decoration:none; font-weight:600; margin-left:16px; }
-.legend { max-width:1400px; margin:0 auto; padding:4px 16px 0; display:grid; grid-template-columns:1fr 1fr; gap:20px; font-size:0.9rem; color:var(--muted); }
+.legend { max-width:1900px; margin:0 auto; padding:4px 16px 0; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; font-size:0.9rem; color:var(--muted); }
 .legend strong { color:var(--ink); }
-main { max-width:1400px; margin:0 auto; padding:8px 16px 40px; }
+main { max-width:1900px; margin:0 auto; padding:8px 16px 40px; }
 section { margin-top:22px; }
 h2 { margin:0 0 8px; font-size:0.95rem; font-weight:600; }
-.pair { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.pair { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; }
 figure { margin:0; } img { width:100%; height:auto; display:block; border-radius:8px; border:1px solid var(--line); }
 figcaption { margin-top:6px; font-size:0.82rem; color:var(--muted); }
-.pendants { max-width:1400px; margin:0 auto; padding:8px 16px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:0.85rem; }
+.pendants { max-width:1900px; margin:0 auto; padding:8px 16px 0; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:0.85rem; }
 .pendants span { color:var(--muted); margin-right:4px; }
 .pendants button { font:600 0.82rem/1.2 inherit; font-family:inherit; color:var(--ink); background:transparent; border:1px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer; }
 .pendants button[aria-pressed="true"] { background:var(--ink); color:var(--bg); border-color:var(--ink); }
@@ -33,8 +33,9 @@ figcaption { margin-top:6px; font-size:0.82rem; color:var(--muted); }
 <body>
 <header><h1>Jane's Kitchen &middot; Renders</h1><nav><a href="../">360&deg; tour</a><a href="../drawings/">Drawings</a></nav></header>
 <div class="legend">
-  <p><strong>Kitchen A</strong> &middot; Painted in Benjamin Moore French Canvas, every door and drawer inset in a painted face frame with a plain square-edged shaker panel, along the back wall and the island; tall single-door uppers running straight up to one continuous crown at the ceiling, which carries over both towers and the fridge column and steps forward round a framed painted box hood that reaches out over the range, aged-brass knobs, the left tower with three drawers (two small brass bar pulls each) and the right appliance garage with a pair of long brass bar pulls, a painted skirting plinth, marble to the hood, square-edged black counters, a pale European-oak chevron floor, an island on the plinth with brass cup pulls and an undermount aluminium sink, a 33-inch herringbone stair runner, a round-headed arch in the charcoal wall into the hall, and crown round the rest of the room, landing and hall</p>
+  <p><strong>Kitchen A</strong> &middot; Painted in Benjamin Moore French Canvas, every door and drawer inset in a painted face frame with a plain square-edged shaker panel, along the back wall and the island; tall single-door uppers running straight up to one continuous cove crown at the ceiling, which carries over both towers and the fridge column and steps forward round a framed painted box hood that reaches out over the range, aged-brass knobs, the left tower with three drawers (two small brass bar pulls each) and the right appliance garage with a pair of long brass bar pulls, a painted skirting plinth, marble to the hood, square-edged black counters, a pale European-oak chevron floor, an island on the plinth with brass cup pulls and an undermount aluminium sink, a 33-inch herringbone stair runner, a round-headed arch in the charcoal wall into the hall, and crown round the rest of the room, landing and hall</p>
   <p><strong>Kitchen B</strong> &middot; Benjamin Moore Edgecomb Gray paint (10% lighter), full-overlay doors and drawers along the whole back wall and the island with a bead-and-quirk profile, the bottom two drawers of each stack sharing one shaker frame, aged-brass knobs, square-edged black counters, a pale European-oak chevron floor (Compass Azure-Chevron, 5.83-inch boards), an island on the same skirting plinth with full-overlay shaker drawers under a row of flat top drawers and brass cup pulls, an undermount aluminium sink and brass bar pulls on its trash pull-out and dishwasher, tall single-door upper cabinets either side of a curved painted hood, a 7-inch spice pull-out beside the range, a painted skirting plinth along the whole back wall, the towers set up like Kitchen A: the left one full overlay with three drawers (two small brass bar pulls each) under tall and short doors, brought forward flush with the fridge, and the right appliance garage with a pair of long brass bar pulls, marble running up behind the hood, a 33-inch brown herringbone stair runner on bronze stair rods, a round-headed arch in the charcoal wall into the hall, and a 10" drywall soffit with crown molding at the ceiling that runs round the whole room, landing and hall</p>
+  <p><strong>Kitchen C</strong> &middot; Kitchen A with full-overlay fronts instead of inset: Benjamin Moore French Canvas, plain square-edged shaker doors and drawers covering the cabinet boxes edge to edge with 1/8-inch gaps along the whole back wall and the island, the left tower with three drawers under tall and short doors and no rails between them; the same cove crown, framed box hood, hardware, counters, floor and island as Kitchen A.</p>
 </div>
 <div class="pendants" role="group" aria-label="Kitchen B pendants">
   <span>Kitchen B pendants</span>
@@ -43,7 +44,7 @@ figcaption { margin-top:6px; font-size:0.82rem; color:var(--muted); }
 </div>
 <main id="views"></main>
 <script>
-// Each view as a Kitchen A / Kitchen B pair: A images sit here, B images in b/
+// Each view as a Kitchen A / Kitchen B / Kitchen C row: A images sit here, B images in b/, C images in c/
 const VIEWS = [
   ["back_wall_elevation", "Back wall elevation (flat, straight on, wall to wall)"],
   ["island_elevation", "Island elevation (flat, straight on, facing the living room)"],
@@ -63,7 +64,7 @@ for (const [file, title] of VIEWS) {
   h.textContent = title;
   const pair = document.createElement("div");
   pair.className = "pair";
-  for (const [label, src] of [["Kitchen A", file + ".jpg"], ["Kitchen B", "b/" + file + ".jpg"]]) {
+  for (const [label, src] of [["Kitchen A", file + ".jpg"], ["Kitchen B", "b/" + file + ".jpg"], ["Kitchen C", "c/" + file + ".jpg"]]) {
     const fig = document.createElement("figure");
     const a = document.createElement("a");
     a.href = src;
