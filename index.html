@@ -76,7 +76,17 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   padding: 6px 8px; cursor: pointer; }
 .design button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .design button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
-.design-note { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.3; color: var(--muted); min-height: 2.6em; }
+.note-toggle { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 0 0 8px;
+  font: 500 0.74rem/1.2 var(--font-ui); color: var(--muted); background: transparent; border: 1px solid var(--line);
+  border-radius: 999px; padding: 5px 8px; cursor: pointer; }
+.note-toggle::after { content: ""; width: 5px; height: 5px; border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.note-toggle[aria-expanded="true"]::after { transform: translateY(1px) rotate(-135deg); }
+.note-toggle:hover { border-color: var(--brass); color: var(--ink); }
+.note-toggle:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.design-note { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.35; color: var(--muted); max-height: 34vh;
+  overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
+.design-note[hidden] { display: none; }
 .spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
 /* plan drawing */
@@ -110,7 +120,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   .title-card .hint { display: none; }
   /* phones: a compact strip, small plan beside the spot list */
   .plan-card { right: 16px; width: auto; display: grid; grid-template-columns: 104px 1fr; column-gap: 12px; align-items: center; }
-  .plan-card .label, .design, .design-note { grid-column: 1 / -1; }
+  .plan-card .label, .design, .note-toggle, .design-note { grid-column: 1 / -1; }
   .spots { margin: 0; grid-template-columns: 1fr; gap: 5px; }
   .spots button { padding: 5px 8px; font-size: 0.74rem; }
   .pnlm-controls-container { display: none; }
@@ -133,7 +143,8 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
       <button type="button" id="design-b" aria-pressed="false">Kitchen B</button>
       <button type="button" id="design-c" aria-pressed="false">Kitchen C</button>
     </div>
-    <p class="design-note" id="design-note"></p>
+    <button type="button" class="note-toggle" id="note-toggle" aria-expanded="false" aria-controls="design-note">Description</button>
+    <p class="design-note" id="design-note" hidden></p>
     <p class="label">Floor plan · you are here</p>
     <svg id="plan" viewBox="-3.6 -0.95 7.2 8.25" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
@@ -271,6 +282,7 @@ function markScene(sceneId) {
   const id = spotOf(sceneId), d = designOf(sceneId);
   document.getElementById("where-name").textContent = byId[id].name + " · " + DESIGNS[d].label;
   document.getElementById("design-note").textContent = DESIGNS[d].note;
+  document.getElementById("design-note").scrollTop = 0;
   for (const k of Object.keys(DESIGNS)) document.getElementById("design-" + k).setAttribute("aria-pressed", k === d ? "true" : "false");
   history.replaceState(null, "", d !== "a" ? "#" + d : location.pathname + location.search);
   for (const s of SPOTS) {
@@ -292,6 +304,13 @@ function drawCone() {
   requestAnimationFrame(drawCone);
 }
 requestAnimationFrame(drawCone);
+document.getElementById("note-toggle").addEventListener("click", function () {
+  var note = document.getElementById("design-note");
+  var open = this.getAttribute("aria-expanded") !== "true";
+  this.setAttribute("aria-expanded", open ? "true" : "false");
+  this.textContent = open ? "Hide description" : "Description";
+  note.hidden = !open;
+});
 </script>
 </body>
 </html>
