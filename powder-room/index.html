@@ -73,7 +73,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 .links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
-.design { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.design { display: grid; grid-template-columns: repeat(2, 1fr); margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .design button { font: 600 0.8rem/1.2 var(--font-ui); color: var(--ink); background: transparent; border: 0; border-radius: 999px;
   padding: 6px 8px; cursor: pointer; }
 .design button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
@@ -132,7 +132,6 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   <div class="card plan-card">
     <div class="design" role="group" aria-label="Design">
       <button type="button" id="design-a" aria-pressed="true">A</button>
-      <button type="button" id="design-b" aria-pressed="false">B</button>
       <button type="button" id="design-c" aria-pressed="false">C</button>
     </div>
     <p class="design-note" id="design-note"></p>
@@ -178,7 +177,6 @@ function hotspotsFor(from, d) {
 // Three designs, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and the view.
 const DESIGNS = {
   a: { label: "Powder Room A", base: "pano_a/", note: "Hyacinth wallpaper over white subway tile with a marble chair rail, walnut serpentine vanity, Anthropologie Perla gold mirror with the Charlotte pleated sconce above, West Elm Champignon light, marble octagon-and-dot floor, 36-inch brass towel bar, white trim and crown." },
-  b: { label: "Powder Room B", base: "pano_b/", note: "Tropical Cabana wallpaper on the walls and ceiling over an almond 3x6 tile wainscot with a navy pencil liner, Kohler Tresham pedestal sink, Moon gold scalloped mirror, Charlotte pleated sconce, Bedrosians Le Cafe white octagon mosaic floor with black dots, Hale Navy trim." },
   c: { label: "Powder Room C", base: "pano_c/", note: "Galerie Spring Blossom stripe wallpaper over creamy-white beadboard, Kohler Tresham pedestal sink, Anthropologie Alia acacia medicine cabinet, Charlotte pleated sconce, Pippa bobbin-edged wall cabinet over the toilet, West Elm Ricci glass flush mount, Bedrosians Legacy glossy kite floor in Siena, crown." },
 };
 const sid = (d, spot) => d + "-" + spot;
