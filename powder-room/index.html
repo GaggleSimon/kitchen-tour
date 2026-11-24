@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>html,body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
-<title>Powder Room A 360</title>
+<title>Powder Room 360</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Figtree:wght@400;500;600&display=swap">
@@ -73,7 +73,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 .links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
-.design { display: grid; grid-template-columns: 1fr 1fr; margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.design { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .design button { font: 600 0.8rem/1.2 var(--font-ui); color: var(--ink); background: transparent; border: 0; border-radius: 999px;
   padding: 6px 8px; cursor: pointer; }
 .design button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
@@ -122,14 +122,20 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 </head>
 <body>
 <div class="tour">
-  <div id="pano" role="img" aria-label="360 degree view of Powder Room A"></div>
+  <div id="pano" role="img" aria-label="360 degree view of the powder room"></div>
 
   <div class="card title-card">
-    <h1>Powder Room A</h1>
-    <div class="where"><strong id="where-name">Doorway</strong><span class="hint">Drag to look around · click a marker to walk</span></div>
+    <h1>Powder Room</h1>
+    <div class="where"><strong id="where-name">Doorway · Powder Room A</strong><span class="hint">Drag to look around · click a marker to walk</span></div>
   </div>
 
   <div class="card plan-card">
+    <div class="design" role="group" aria-label="Design">
+      <button type="button" id="design-a" aria-pressed="true">A</button>
+      <button type="button" id="design-b" aria-pressed="false">B</button>
+      <button type="button" id="design-c" aria-pressed="false">C</button>
+    </div>
+    <p class="design-note" id="design-note"></p>
     <p class="label">Floor plan · you are here</p>
     <svg id="plan" viewBox="-50 -38 88 76" aria-hidden="true"></svg>
     <ul class="spots" id="spot-list"></ul>
@@ -150,11 +156,11 @@ const SPOTS = [
 const byId = Object.fromEntries(SPOTS.map(s => [s.id, s]));
 const deg = r => r * 180 / Math.PI;
 
-function hotspotsFor(from) {
+function hotspotsFor(from, d) {
   return SPOTS.filter(s => s.id !== from.id).map(to => {
     const dx = to.x - from.x, dy = to.y - from.y, dist = Math.hypot(dx, dy);
     return {
-      type: "scene", sceneId: to.id, yaw: deg(Math.atan2(dx, dy)), pitch: -deg(Math.atan2(EYE, dist)),
+      type: "scene", sceneId: sid(d, to.id), yaw: deg(Math.atan2(dx, dy)), pitch: -deg(Math.atan2(EYE, dist)),
       targetYaw: "sameAzimuth", cssClass: "hs-spot",
       createTooltipFunc: (div, label) => {
         div.tabIndex = 0;
@@ -162,25 +168,35 @@ function hotspotsFor(from) {
         div.setAttribute("aria-label", "Walk to " + label);
         div.innerHTML = '<span class="ring"></span><span class="tag"></span>';
         div.querySelector(".tag").textContent = label;
-        div.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") viewer.loadScene(to.id); });
+        div.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") viewer.loadScene(sid(d, to.id)); });
       },
       createTooltipArgs: to.name,
     };
   });
 }
 
-// Design A. B and C will get pano_b/ and pano_c/ plus a design switch like the kitchen tour.
+// Three designs, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and the view.
+const DESIGNS = {
+  a: { label: "Powder Room A", base: "pano_a/", note: "Hyacinth wallpaper over white subway tile with a marble chair rail, walnut serpentine vanity, Anthropologie Perla gold mirror with the Charlotte pleated sconce above, West Elm Champignon light, marble octagon-and-dot floor, 36-inch brass towel bar, white trim and crown." },
+  b: { label: "Powder Room B", base: "pano_b/", note: "Tropical Cabana wallpaper on the walls and ceiling over an almond 3x6 tile wainscot with a navy pencil liner, Kohler Tresham pedestal sink, Moon gold scalloped mirror, Charlotte pleated sconce, Bedrosians Le Cafe white octagon mosaic floor with black dots, Hale Navy trim." },
+  c: { label: "Powder Room C", base: "pano_c/", note: "Galerie Spring Blossom stripe wallpaper over creamy-white beadboard, Kohler Tresham pedestal sink, Anthropologie Alia acacia medicine cabinet, Charlotte pleated sconce, Pippa bobbin-edged wall cabinet over the toilet, West Elm Ricci glass flush mount, Bedrosians Legacy glossy kite floor in Siena, crown." },
+};
+const sid = (d, spot) => d + "-" + spot;
+const spotOf = id => id.slice(2), designOf = id => id[0];
 // Each spot is a tiled cube (web/make_multires.py): a small level loads first, then the full-size tiles in view.
 const MULTIRES = { path: "/%l/%s%y_%x", fallbackPath: "/fallback/%s", extension: "jpg", tileResolution: 1024,
                    maxLevel: 3, cubeResolution: 3072 };
 const scenes = {};
-for (const s of SPOTS) {
-  scenes[s.id] = { type: "multires", multiRes: { ...MULTIRES, basePath: "pano_a/" + s.id }, yaw: s.start, pitch: -6,
-                   hotSpots: hotspotsFor(s) };
+for (const d of Object.keys(DESIGNS)) {
+  for (const s of SPOTS) {
+    scenes[sid(d, s.id)] = { type: "multires", multiRes: { ...MULTIRES, basePath: DESIGNS[d].base + s.id }, yaw: s.start, pitch: -6,
+                             hotSpots: hotspotsFor(s, d) };
+  }
 }
+const firstDesign = DESIGNS[location.hash.slice(1)] ? location.hash.slice(1) : "a";
 const viewer = pannellum.viewer("pano", {
   // portrait phones get a narrower horizontal field of view so the picture is not stretched
-  default: { firstScene: "doorway", autoLoad: true, sceneFadeDuration: 700, hfov: innerHeight > innerWidth ? 75 : 105,
+  default: { firstScene: sid(firstDesign, "doorway"), autoLoad: true, sceneFadeDuration: 700, hfov: innerHeight > innerWidth ? 75 : 105,
              minHfov: 40, maxHfov: 120, showControls: true },
   scenes,
 });
@@ -200,7 +216,7 @@ const line = (pts, cls) => el("polyline", { points: pts.map(p => P(...p)).join("
 
 rect(-48, -24.18, -29.5, 5.82, "plan-hall");                       // hall outside the door
 el("polygon", { class: "plan-floor", points: [[-29.5, -32], [29.5, -32], [29.5, 32], [-29.5, 32]].map(p => P(...p)).join(" ") });
-rect(-27.15, 9.6, -3.15, 31.6, "plan-vanity");                      // vanity
+rect(-27.15, 12.1, -3.15, 31.6, "plan-vanity");                     // vanity / pedestal sink
 rect(6.05, 22.7, 22.35, 30.6, "plan-cab");                          // toilet tank
 el("ellipse", { cx: 14.2, cy: -12.9, rx: 7.15, ry: 9.8, class: "plan-cab" });   // toilet bowl
 // walls, with the 30-inch door opening in the left wall (y -24.18..5.82)
@@ -229,23 +245,36 @@ for (const s of SPOTS) {
   buttons[s.id] = b;
 }
 
-function go(id) { if (viewer.getScene() !== id) viewer.loadScene(id); }
+function go(id) {
+  const target = sid(designOf(viewer.getScene()), id);
+  if (viewer.getScene() !== target) viewer.loadScene(target);
+}
+function setDesign(d) {  // same spot, same view direction, other design
+  const cur = viewer.getScene();
+  if (designOf(cur) !== d) viewer.loadScene(sid(d, spotOf(cur)), viewer.getPitch(), viewer.getYaw(), viewer.getHfov());
+}
+for (const d of Object.keys(DESIGNS)) document.getElementById("design-" + d).addEventListener("click", () => setDesign(d));
 
 let shown = null;
-function markScene(id) {
-  shown = id;
-  document.getElementById("where-name").textContent = byId[id].name;
+function markScene(sceneId) {
+  shown = sceneId;
+  const id = spotOf(sceneId), d = designOf(sceneId);
+  document.getElementById("where-name").textContent = byId[id].name + " · " + DESIGNS[d].label;
+  document.getElementById("design-note").textContent = DESIGNS[d].note;
+  for (const k of Object.keys(DESIGNS)) document.getElementById("design-" + k).setAttribute("aria-pressed", k === d ? "true" : "false");
+  history.replaceState(null, "", d !== "a" ? "#" + d : location.pathname + location.search);
   for (const s of SPOTS) {
     dots[s.id].classList.toggle("active", s.id === id);
     buttons[s.id].setAttribute("aria-current", s.id === id ? "true" : "false");
   }
 }
-markScene("doorway");
+markScene(sid(firstDesign, "doorway"));
 viewer.on("scenechange", markScene);
 
 function drawCone() {
-  const s = byId[viewer.getScene()] || byId.doorway;
-  if (s.id !== shown) markScene(s.id);
+  const cur = viewer.getScene() || sid(firstDesign, "doorway");
+  const s = byId[spotOf(cur)] || byId.doorway;
+  if (cur !== shown) markScene(cur);
   const yaw = viewer.getYaw(), half = viewer.getHfov() / 2, r = 18;
   const pt = a => { const t = (a * Math.PI) / 180; return [s.x + r * Math.sin(t), s.y + r * Math.cos(t)]; };
   const [ax, ay] = pt(yaw - half), [bx, by] = pt(yaw + half);
