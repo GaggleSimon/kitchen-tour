@@ -73,11 +73,19 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
 .links a { color: var(--brass); text-decoration: none; font-weight: 600; white-space: nowrap; }
 .links a:hover { text-decoration: underline; }
 .spots button[aria-current="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
-.design { display: grid; grid-template-columns: repeat(2, 1fr); margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.design { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0 0 4px; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .design button { font: 600 0.8rem/1.2 var(--font-ui); color: var(--ink); background: transparent; border: 0; border-radius: 999px;
   padding: 6px 8px; cursor: pointer; }
 .design button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .design button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.wallpaper { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; }
+.wallpaper[hidden] { display: none; }
+.wallpaper .wp-label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+.wallpaper button { font: 600 0.76rem/1.2 var(--font-ui); color: var(--ink); background: transparent; border: 1px solid var(--line);
+  border-radius: 999px; padding: 4px 11px; min-width: 2.1em; cursor: pointer; }
+.wallpaper button:hover { border-color: var(--brass); }
+.wallpaper button[aria-pressed="true"] { background: var(--brass); border-color: var(--brass); color: #fff; }
+.wallpaper button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 .design-note { margin: 0 0 8px; font-size: 0.72rem; line-height: 1.3; color: var(--muted); min-height: 2.6em; }
 .spots button:focus-visible, .hs-spot:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
@@ -112,7 +120,7 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   .title-card .hint { display: none; }
   /* phones: a compact strip, small plan beside the spot list */
   .plan-card { right: 16px; width: auto; display: grid; grid-template-columns: 104px 1fr; column-gap: 12px; align-items: center; }
-  .plan-card .label, .design, .design-note { grid-column: 1 / -1; }
+  .plan-card .label, .design, .wallpaper, .design-note { grid-column: 1 / -1; }
   .spots { margin: 0; grid-template-columns: 1fr; gap: 5px; }
   .spots button { padding: 5px 8px; font-size: 0.74rem; }
   .pnlm-controls-container { display: none; }
@@ -132,8 +140,10 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); ov
   <div class="card plan-card">
     <div class="design" role="group" aria-label="Design">
       <button type="button" id="design-a" aria-pressed="true">A</button>
+      <button type="button" id="design-b" aria-pressed="false">B</button>
       <button type="button" id="design-c" aria-pressed="false">C</button>
     </div>
+    <div class="wallpaper" id="wallpaper" role="group" aria-label="Wallpaper" hidden><span class="wp-label">Wallpaper</span></div>
     <p class="design-note" id="design-note"></p>
     <p class="label">Floor plan · you are here</p>
     <svg id="plan" viewBox="-50 -38 88 76" aria-hidden="true"></svg>
@@ -175,12 +185,19 @@ function hotspotsFor(from, d) {
 }
 
 // Three designs, each a full set of spots. Scene ids are "<design>-<spot>"; switching keeps the spot and the view.
+// Wallpaper options (owner 2026-11-24: "can powder room B have a switch for wallpaper ... label it 1"): an entry with
+// `group: "b"` is Powder Room B with another wallpaper. It has its own panoramas and shows as a button in the
+// Wallpaper row (label = `wp`) while B is selected. web/build_site.py drops the entries that are not rendered yet.
 const DESIGNS = {
-  a: { label: "Powder Room A", base: "pano_a/", note: "Hyacinth wallpaper over white subway tile with a marble chair rail, walnut serpentine vanity, Anthropologie Perla gold mirror with the Charlotte pleated sconce above, West Elm Champignon light, marble octagon-and-dot floor, 36-inch brass towel bar, white trim and crown." },
+  a: { label: "Powder Room A", base: "pano_a/", note: "Hyacinth wallpaper over white subway tile with a marble chair rail, walnut serpentine vanity, Anthropologie Perla gold mirror with the Charlotte pleated sconce above, West Elm Champignon light, Bedrosians Legacy glossy kite floor in Siena, Anthropologie Maude brass towel ring, bar and paper holder, white trim and crown." },
+  b: { label: "Powder Room B", base: "pano_b/", note: "A-Street Prints Periwinkle light grey floral wallpaper over creamy-white beadboard, Kohler Tresham pedestal sink, Anthropologie Alia acacia medicine cabinet, Charlotte pleated sconce, Pippa bobbin-edged wall cabinet, Anthropologie Maude brass towel ring, bar and paper holder, West Elm Ricci glass flush mount, Bedrosians Legacy glossy kite floor in Siena, crown." , wp: "Original" },
   c: { label: "Powder Room C", base: "pano_c/", note: "Galerie Spring Blossom stripe wallpaper over creamy-white beadboard, Kohler Tresham pedestal sink, Anthropologie Alia acacia medicine cabinet, Charlotte pleated sconce, Pippa bobbin-edged wall cabinet over the toilet, West Elm Ricci glass flush mount, Bedrosians Legacy glossy kite floor in Siena, crown." },
 };
 const sid = (d, spot) => d + "-" + spot;
-const spotOf = id => id.slice(2), designOf = id => id[0];
+const spotOf = id => id.slice(id.indexOf("-") + 1), designOf = id => id.slice(0, id.indexOf("-"));
+const groupOf = d => DESIGNS[d].group || d;                       // "b1" -> "b"
+const variantsOf = g => Object.keys(DESIGNS).filter(k => groupOf(k) === g);
+const lastVariant = {};                                           // the wallpaper last shown in each design
 // Each spot is a tiled cube (web/make_multires.py): a small level loads first, then the full-size tiles in view.
 const MULTIRES = { path: "/%l/%s%y_%x", fallbackPath: "/fallback/%s", extension: "jpg", tileResolution: 1024,
                    maxLevel: 3, cubeResolution: 3072 };
@@ -251,7 +268,20 @@ function setDesign(d) {  // same spot, same view direction, other design
   const cur = viewer.getScene();
   if (designOf(cur) !== d) viewer.loadScene(sid(d, spotOf(cur)), viewer.getPitch(), viewer.getYaw(), viewer.getHfov());
 }
-for (const d of Object.keys(DESIGNS)) document.getElementById("design-" + d).addEventListener("click", () => setDesign(d));
+for (const d of Object.keys(DESIGNS)) {
+  if (groupOf(d) === d) document.getElementById("design-" + d).addEventListener("click", () => setDesign(lastVariant[d] || d));
+}
+const wpRow = document.getElementById("wallpaper"), wpButtons = {};
+for (const d of Object.keys(DESIGNS)) {
+  if (variantsOf(groupOf(d)).length < 2) continue;                  // a design with one wallpaper gets no switch
+  const b = document.createElement("button");
+  b.type = "button";
+  b.textContent = DESIGNS[d].wp;
+  b.setAttribute("aria-label", "Wallpaper " + DESIGNS[d].wp);
+  b.addEventListener("click", () => setDesign(d));
+  wpRow.appendChild(b);
+  wpButtons[d] = b;
+}
 
 let shown = null;
 function markScene(sceneId) {
@@ -259,7 +289,16 @@ function markScene(sceneId) {
   const id = spotOf(sceneId), d = designOf(sceneId);
   document.getElementById("where-name").textContent = byId[id].name + " · " + DESIGNS[d].label;
   document.getElementById("design-note").textContent = DESIGNS[d].note;
-  for (const k of Object.keys(DESIGNS)) document.getElementById("design-" + k).setAttribute("aria-pressed", k === d ? "true" : "false");
+  const g = groupOf(d);
+  lastVariant[g] = d;
+  for (const k of Object.keys(DESIGNS)) {
+    if (groupOf(k) === k) document.getElementById("design-" + k).setAttribute("aria-pressed", k === g ? "true" : "false");
+  }
+  wpRow.hidden = variantsOf(g).length < 2;
+  for (const [k, b] of Object.entries(wpButtons)) {
+    b.hidden = groupOf(k) !== g;
+    b.setAttribute("aria-pressed", k === d ? "true" : "false");
+  }
   history.replaceState(null, "", d !== "a" ? "#" + d : location.pathname + location.search);
   for (const s of SPOTS) {
     dots[s.id].classList.toggle("active", s.id === id);
